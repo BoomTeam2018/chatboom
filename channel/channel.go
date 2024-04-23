@@ -1,12 +1,16 @@
 package channel
 
 import (
+	"chat/connection"
 	"chat/globals"
 	"chat/utils"
+	"context"
 	"errors"
 	"fmt"
 	"net/url"
 	"strings"
+	"sync"
+	"time"
 )
 
 var defaultMaxRetries = 1
@@ -176,6 +180,23 @@ func (c *Channel) GetGroup() []string {
 }
 
 func (c *Channel) GetProxy() globals.ProxyConfig {
+	redisKey := fmt.Sprintf("channel:%d:requests", c.GetId())
+	ctx := context.Background()
+
+	count, err := connection.Cache.Incr(ctx, redisKey).Result()
+	if err != nil {
+		globals.Error(fmt.Sprintf("Failed to increase request count: %s", err))
+		return c.Proxy // 返回当前代理配置，或处理错误更优雅
+	}
+	if count == 1 {
+		connection.Cache.Expire(ctx, redisKey, 10*time.Second) // 设置10秒过期时间
+	}
+
+	if count > 10 {
+		c.Proxy = getNewProxy()
+		connection.Cache.Set(ctx, redisKey, 0, 10*time.Second)
+	}
+
 	return c.Proxy
 }
 
@@ -217,4 +238,41 @@ func (c *Channel) ProcessError(err error) error {
 	}
 
 	return errors.New(content)
+}
+
+var proxyConfigs []globals.ProxyConfig
+
+func init() {
+	// 在程序启动时初始化代理配置
+	proxyConfigs = []globals.ProxyConfig{
+		{
+			ProxyType: 1,
+			Proxy:     "http://127.0.0.1:10809",
+			Username:  "",
+			Password:  "",
+		},
+		{
+			ProxyType: 0,
+			Proxy:     "",
+			Username:  "",
+			Password:  "",
+		},
+		{
+			ProxyType: 3,
+			Proxy:     "socks5://127.0.0.1:10808",
+			Username:  "",
+			Password:  "",
+		},
+	}
+}
+
+var currentIndex int = 0
+var mutex sync.Mutex
+
+func getNewProxy() globals.ProxyConfig {
+	mutex.Lock()
+	defer mutex.Unlock()
+	proxy := proxyConfigs[currentIndex]
+	currentIndex = (currentIndex + 1) % len(proxyConfigs)
+	return proxy
 }
