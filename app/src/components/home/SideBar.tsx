@@ -76,7 +76,7 @@ const SidebarProduct: React.FC = () => {
                         dispatch(closeMarket());
                     }}
                     style={{
-                        height: '30px'
+                        height: '40px'
                     }}
                 >
                     <div className="icon-wrapper" style={{ marginTop: '20px' }}>
@@ -98,6 +98,9 @@ const SidebarProduct: React.FC = () => {
                         await toggle(-1);
                         if (mobile) dispatch(setMenu(false));
                         dispatch(closeMarket());
+                    }}
+                    style={{
+                        height: '40px'
                     }}
                 >
                     <div className="icon-wrapper" style={{ marginTop: '20px' }}>
