@@ -42,11 +42,11 @@ import {
     TooltipContent,
     TooltipProvider
 } from '@/components/ui/tooltip.tsx';
-import { GPTIcon } from '@/svg/icons.tsx';
 import { AppDispatch } from '@/store';
 import { refreshQuota } from '@/store/quota.ts';
 import { refreshSubscription } from '@/store/subscription.ts';
-// import {MusicIcon} from "@/svg/icons.tsx";
+import { GPTIcon } from '@/svg/icons.tsx';
+import { MusicIcon } from '@/svg/icons.tsx';
 // import {Logo} from "@/svg/icons.tsx";
 type Operation = {
     target: ConversationInstance | null;
@@ -75,6 +75,9 @@ const SidebarProduct: React.FC = () => {
                         if (mobile) dispatch(setMenu(false));
                         dispatch(closeMarket());
                     }}
+                    style={{
+                        height: '30px'
+                    }}
                 >
                     <div className="icon-wrapper" style={{ marginTop: '20px' }}>
                         <GPTIcon
@@ -87,17 +90,31 @@ const SidebarProduct: React.FC = () => {
                         <span className="font-semibold">ChatGPT</span>
                     </div>
                 </TooltipTrigger>
-                <TooltipContent>{t('new chat')}</TooltipContent>
+                <TooltipContent>{t('new-chat-placeholder')}</TooltipContent>
             </Tooltip>
-            {/*<Tooltip>*/}
-            {/*    <TooltipTrigger onClick={() => handleCreateNewSession('Music')}>*/}
-            {/*        <div className="icon-wrapper">*/}
-            {/*            <MusicIcon style={{width: '32px', height: '32px', marginRight: '5px',marginLeft: '-5px'}}/>*/}
-            {/*            <span className="font-semibold">Music</span>*/}
-            {/*        </div>*/}
-            {/*    </TooltipTrigger>*/}
-            {/*    <TooltipContent>{t("New Music")}</TooltipContent>*/}
-            {/*</Tooltip>*/}
+            <Tooltip>
+                <TooltipTrigger
+                    onClick={async () => {
+                        await toggle(-1);
+                        if (mobile) dispatch(setMenu(false));
+                        dispatch(closeMarket());
+                    }}
+                >
+                    <div className="icon-wrapper" style={{ marginTop: '20px' }}>
+                        <MusicIcon
+                            style={{
+                                width: '30px',
+                                height: '30px',
+                                marginRight: '6px',
+                                marginLeft: '-4px',
+                                marginBottom: '2px'
+                            }}
+                        />
+                        <span className="font-semibold">Music</span>
+                    </div>
+                </TooltipTrigger>
+                <TooltipContent>{t('new-music-placeholder')}</TooltipContent>
+            </Tooltip>
             {/*<Tooltip>*/}
             {/*    <TooltipTrigger onClick={() => handleCreateNewSession('PPT')}>*/}
             {/*        <div className="icon-wrapper">*/}
