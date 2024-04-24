@@ -252,12 +252,6 @@ func init() {
 			Password:  "",
 		},
 		{
-			ProxyType: 0,
-			Proxy:     "",
-			Username:  "",
-			Password:  "",
-		},
-		{
 			ProxyType: 3,
 			Proxy:     "socks5://127.0.0.1:10808",
 			Username:  "",
