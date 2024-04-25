@@ -3,8 +3,8 @@ FROM golang:1.20-alpine AS backend
 WORKDIR /backend
 COPY . .
 
-# Set go proxy to https://goproxy.cn (open for vps in China Mainland)
-# RUN go env -w GOPROXY=https://goproxy.cn,direct
+#Set go proxy to https://goproxy.cn (open for vps in China Mainland)
+RUN go env -w GOPROXY=https://goproxy.cn,direct
 ENV GOOS=linux GO111MODULE=on CGO_ENABLED=1
 
 # Install dependencies for cgo
