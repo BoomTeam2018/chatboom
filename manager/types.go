@@ -101,6 +101,15 @@ type TranshipmentError struct {
 	Type    string `json:"type"`
 }
 
+type SensitiveError struct {
+	Message string
+	Code    int
+}
+
+func (e *SensitiveError) Error() string {
+	return fmt.Sprintf("Code %d: %s", e.Code, e.Message)
+}
+
 type RelayImageForm struct {
 	Model  string `json:"model"`
 	Prompt string `json:"prompt"`

@@ -1,11 +1,16 @@
 package manager
 
 import (
+	"bytes"
 	"chat/auth"
+	"chat/globals"
 	"chat/manager/conversation"
 	"chat/utils"
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
+	"net/http"
 	"strconv"
 	"strings"
 )
@@ -82,6 +87,17 @@ func ChatAPI(c *gin.Context) {
 	buf.Handle(func(form *conversation.FormMessage) error {
 		switch form.Type {
 		case ChatType:
+			go func() {
+				sensitive := checkSensitive(form.Message)
+				if sensitive {
+					err := &SensitiveError{Message: "该内容可能违规！！", Code: 756}
+					buf.Send(
+						globals.ChatSegmentResponse{
+							Message: err.Error(),
+							End:     true,
+						})
+				}
+			}()
 			if instance.HandleMessage(db, form) {
 				response := ChatHandler(buf, user, instance, false)
 				instance.SaveResponse(db, response)
@@ -117,4 +133,42 @@ func ChatAPI(c *gin.Context) {
 
 		return nil
 	})
+}
+
+func checkSensitive(message string) bool {
+	// 替换为你的Java微服务的URL
+	url := "http://localhost:8081/api/sensitive/check"
+
+	// 创建请求体
+	requestData := globals.SensitiveRequest{
+		Content: message,
+	}
+	jsonData, err := json.Marshal(requestData)
+	if err != nil {
+		fmt.Errorf("Error occurred during marshalling: %v", err)
+		return false
+	}
+
+	// 发送请求
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonData))
+	if err != nil {
+		fmt.Errorf("Error occurred during HTTP POST: %v", err)
+		return false
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Errorf("Error reading response: %v", err)
+		return false
+	}
+
+	var response globals.SensitiveResponse
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		fmt.Errorf("Error unmarshalling response: %v", err)
+		return false
+	}
+
+	return response.Sensitive
 }

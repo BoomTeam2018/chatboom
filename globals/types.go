@@ -52,3 +52,11 @@ type ProxyConfig struct {
 	Username  string `json:"username" mapstructure:"username"`
 	Password  string `json:"password" mapstructure:"password"`
 }
+
+type SensitiveRequest struct {
+	Content string `json:"message"`
+}
+
+type SensitiveResponse struct {
+	Sensitive bool `json:"sensitive"`
+}
