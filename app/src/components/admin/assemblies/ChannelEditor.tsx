@@ -55,6 +55,7 @@ import { isEnter } from '@/utils/base.ts';
 type CustomActionProps = {
     onPost: (model: string) => void;
 };
+
 function CustomAction({ onPost }: CustomActionProps) {
     const { t } = useTranslation();
     const [model, setModel] = useState('');

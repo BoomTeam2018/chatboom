@@ -14,21 +14,6 @@ export class EventCommitter<T> {
         this.destroyedAfterTrigger = destroyedAfterTrigger;
     }
 
-    protected setTrigger(trigger: (data: T) => void) {
-        this.trigger = trigger;
-    }
-
-    protected clearTrigger() {
-        this.trigger = undefined;
-    }
-
-    protected triggerEvent(data: T) {
-        this.trigger && this.trigger(data);
-        if (this.destroyedAfterTrigger) this.clearTrigger();
-
-        this.listeners.forEach(listener => listener(data));
-    }
-
     public emit(data: T) {
         this.triggerEvent(data);
     }
@@ -47,5 +32,20 @@ export class EventCommitter<T> {
 
     public clearEventListener() {
         this.listeners = [];
+    }
+
+    protected setTrigger(trigger: (data: T) => void) {
+        this.trigger = trigger;
+    }
+
+    protected clearTrigger() {
+        this.trigger = undefined;
+    }
+
+    protected triggerEvent(data: T) {
+        this.trigger && this.trigger(data);
+        if (this.destroyedAfterTrigger) this.clearTrigger();
+
+        this.listeners.forEach(listener => listener(data));
     }
 }

@@ -19,8 +19,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import '@/assets/pages/subscription.less';
 import {
-    openDialog as openQuotaDialog,
-    dialogSelector as quotaDialogSelector
+    dialogSelector as quotaDialogSelector,
+    openDialog as openQuotaDialog
 } from '@/store/quota.ts';
 import { Calendar, Info } from 'lucide-react';
 import { useEffectAsync } from '@/utils/hook.ts';

@@ -59,37 +59,8 @@ export class GenerationManager {
         return this.processing;
     }
 
-    protected setProcessing(processing: boolean): boolean {
-        this.processing = processing;
-        if (!processing) {
-            this.connection = null;
-            this.message = '';
-        }
-        this.onProcessingChange?.(processing);
-        return processing;
-    }
-
     public getConnection(): WebSocket | null {
         return this.connection;
-    }
-
-    protected handleMessage(message: GenerationSegmentResponse): void {
-        if (message.error && message.end) {
-            this.onError?.(message.error);
-            this.setProcessing(false);
-            return;
-        }
-
-        this.message += message.message;
-        this.onMessage?.({
-            message: this.message,
-            quota: message.quota
-        });
-
-        if (message.end) {
-            this.onFinished?.(message.hash);
-            this.setProcessing(false);
-        }
     }
 
     public generate(prompt: string, model: string) {
@@ -119,6 +90,35 @@ export class GenerationManager {
         }
         this.generate(prompt, model);
         return true;
+    }
+
+    protected setProcessing(processing: boolean): boolean {
+        this.processing = processing;
+        if (!processing) {
+            this.connection = null;
+            this.message = '';
+        }
+        this.onProcessingChange?.(processing);
+        return processing;
+    }
+
+    protected handleMessage(message: GenerationSegmentResponse): void {
+        if (message.error && message.end) {
+            this.onError?.(message.error);
+            this.setProcessing(false);
+            return;
+        }
+
+        this.message += message.message;
+        this.onMessage?.({
+            message: this.message,
+            quota: message.quota
+        });
+
+        if (message.end) {
+            this.onFinished?.(message.hash);
+            this.setProcessing(false);
+        }
     }
 }
 

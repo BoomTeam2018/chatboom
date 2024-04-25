@@ -156,6 +156,7 @@ function Wrapper({ onSend }: WrapperProps) {
         </div>
     );
 }
+
 function Generation() {
     const [state, setState] = useState(false);
     manager.setProcessingChangeHandler(setState);

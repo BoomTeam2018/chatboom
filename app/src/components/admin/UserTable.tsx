@@ -382,6 +382,7 @@ function UserTable() {
                 description: resp.message
             });
     }
+
     useEffectAsync(update, [page]);
 
     return (

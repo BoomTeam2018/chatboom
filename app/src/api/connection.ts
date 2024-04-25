@@ -36,11 +36,11 @@ export type ChatProps = {
 type StreamCallback = (id: number, message: StreamMessage) => void;
 
 export class Connection {
+    public id: number;
+    public state: boolean;
     protected connection?: WebSocket;
     protected callback?: StreamCallback;
     protected stack?: Record<string, any>;
-    public id: number;
-    public state: boolean;
 
     public constructor(id: number, callback?: StreamCallback) {
         this.state = false;
@@ -174,10 +174,6 @@ export class Connection {
         this.callback = callback;
     }
 
-    protected triggerCallback(message: StreamMessage): void {
-        this.callback && this.callback(this.id, message);
-    }
-
     public setId(id: number): void {
         this.id = id;
     }
@@ -190,6 +186,10 @@ export class Connection {
         if (!this.connection || !this.state) return false;
 
         return this.connection.readyState === WebSocket.OPEN;
+    }
+
+    protected triggerCallback(message: StreamMessage): void {
+        this.callback && this.callback(this.id, message);
     }
 }
 

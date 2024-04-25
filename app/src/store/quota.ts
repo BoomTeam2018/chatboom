@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from './index.ts';
 import { getQuota } from '@/api/quota.ts';
 
@@ -48,8 +48,6 @@ export const dialogSelector = (state: RootState): boolean => state.quota.dialog;
 export const quotaValueSelector = (state: RootState): number =>
     state.quota.quota;
 export const quotaSelector = (state: RootState): number => state.quota.quota;
-
-import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const refreshQuota = createAsyncThunk(
     'quota/refreshQuota',

@@ -8,6 +8,7 @@ import { blobEvent } from '@/events/blob.ts';
 import { cn } from '@/components/ui/lib/utils.ts';
 import { isEnter } from '@/utils/base.ts';
 import '@/assets/ChatInput.less';
+
 type ChatInputProps = {
     className?: string;
     target?: React.RefObject<HTMLTextAreaElement>;

@@ -2,10 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
     AssistantRole,
     ConversationInstance,
+    Message,
     Model,
     UserRole
 } from '@/api/types.tsx';
-import { Message } from '@/api/types.tsx';
 import { AppDispatch, RootState } from './index.ts';
 import {
     getArrayMemory,
@@ -21,11 +21,11 @@ import {
     setOfflineModels
 } from '@/conf/storage.ts';
 import {
-    deleteConversation as doDeleteConversation,
     deleteAllConversations as doDeleteAllConversations,
-    renameConversation as doRenameConversation,
+    deleteConversation as doDeleteConversation,
+    getConversationList,
     loadConversation,
-    getConversationList
+    renameConversation as doRenameConversation
 } from '@/api/history.ts';
 import { CustomMask, Mask } from '@/masks/types.ts';
 import { listMasks } from '@/api/mask.ts';

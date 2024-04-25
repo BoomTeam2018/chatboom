@@ -33,6 +33,7 @@ type ConversationSegmentProps = {
         type: string;
     }) => void;
 };
+
 function ConversationSegment({
     conversation,
     current,

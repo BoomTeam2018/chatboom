@@ -698,6 +698,7 @@ type MarketGroupProps = {
     stacked: boolean;
     channelModels: string[];
 };
+
 function MarketGroup({
     form,
     dispatch,

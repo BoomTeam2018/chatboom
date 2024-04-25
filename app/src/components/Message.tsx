@@ -275,7 +275,6 @@ function MessageContent({
                         <Avatar
                             className={`message-avatar`}
                             username={username ?? user}
-
                         />
                     ) : (
                         <GPTIcon

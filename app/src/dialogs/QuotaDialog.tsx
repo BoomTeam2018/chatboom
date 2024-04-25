@@ -6,8 +6,8 @@ import {
     setDialog
 } from '@/store/quota.ts';
 import {
-    openDialog as openSubDialog,
-    dialogSelector as subDialogSelector
+    dialogSelector as subDialogSelector,
+    openDialog as openSubDialog
 } from '@/store/subscription.ts';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';

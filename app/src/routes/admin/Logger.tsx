@@ -8,11 +8,11 @@ import { useTranslation } from 'react-i18next';
 import { useMemo, useState } from 'react';
 import { useEffectAsync } from '@/utils/hook.ts';
 import {
-    Logger,
-    listLoggers,
-    downloadLogger,
     deleteLogger,
-    getLoggerConsole
+    downloadLogger,
+    getLoggerConsole,
+    listLoggers,
+    Logger
 } from '@/admin/api/logger.ts';
 import { getSizeUnit } from '@/utils/base.ts';
 import { Download, RotateCcw, Terminal, Trash } from 'lucide-react';
@@ -27,6 +27,7 @@ import { cn } from '@/components/ui/lib/utils.ts';
 type LoggerItemProps = Logger & {
     onUpdate: () => void;
 };
+
 function LoggerItem({ path, size, onUpdate }: LoggerItemProps) {
     const { t } = useTranslation();
     const { toast } = useToast();

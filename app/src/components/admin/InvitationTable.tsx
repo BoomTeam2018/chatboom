@@ -181,6 +181,7 @@ function InvitationTable() {
                 description: resp.message
             });
     }
+
     useEffectAsync(update, [page]);
 
     return (

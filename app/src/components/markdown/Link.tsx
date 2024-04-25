@@ -43,9 +43,9 @@ export default function ({ href, children }: LinkProps) {
         return (
             <audio
                 src={url}
-                controls  // Displays default browser controls
-                style={{width: '100%'}}  // Adjust the width as needed
-                hidden={false}  // Ensure the player is visible
+                controls // Displays default browser controls
+                style={{ width: '100%' }} // Adjust the width as needed
+                hidden={false} // Ensure the player is visible
             >
                 Your browser does not support the audio element.
             </audio>

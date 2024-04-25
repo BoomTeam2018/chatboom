@@ -11,10 +11,10 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     dialogSelector,
-    setDialog,
-    keySelector,
     getApiKey,
-    regenerateApiKey
+    keySelector,
+    regenerateApiKey,
+    setDialog
 } from '@/store/api.ts';
 import { Input } from '@/components/ui/input.tsx';
 import { Copy, Power, RotateCw } from 'lucide-react';

@@ -1,13 +1,13 @@
 import {
+    Archive,
+    AudioLines,
     BookText,
     Compass,
+    Container,
+    Flame,
     Image,
     ImagePlus,
-    Video,
-    AudioLines,
-    Container,
-    Archive,
-    Flame
+    Video
 } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { Plan, Plans } from '@/api/types.tsx';

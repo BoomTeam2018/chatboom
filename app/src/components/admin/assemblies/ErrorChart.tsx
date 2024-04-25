@@ -8,6 +8,7 @@ type ErrorChartProps = {
     labels: string[];
     datasets: number[];
 };
+
 function ErrorChart({ labels, datasets }: ErrorChartProps) {
     const { t } = useTranslation();
     const data = useMemo(() => {

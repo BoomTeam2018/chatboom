@@ -12,7 +12,7 @@ services:
     expose:
       - "3306"
     volumes:
-        - ./db:/var/lib/mysql
+      - ./db:/var/lib/mysql
     networks:
       - chatboom-network
 
@@ -28,37 +28,37 @@ services:
       - chatboom-network
 
   chatboom:
-      image: programzmh/chatboom
-      container_name: chatboom
-      restart: always
-      ports:
-          - "8000:8094"
-      depends_on:
-          - mysql
-          - redis
-      links:
-          - mysql
-          - redis
-      ulimits:
-        nofile:
-          soft: 65535
-          hard: 65535
-      environment:
-          MYSQL_HOST: mysql
-          MYSQL_USER: chatboom
-          MYSQL_PASSWORD: chatboom123456!
-          MYSQL_DB: chatboom
-          REDIS_HOST: redis
-          REDIS_PORT: 6379
-          REDIS_PASSWORD: ""
-          REDIS_DB: 0
-          SERVE_STATIC: "true"
-      volumes:
-        - ./config:/config
-        - ./logs:/logs
-        - ./storage:/storage
-      networks:
-        - chatboom-network
+    image: programzmh/chatboom
+    container_name: chatboom
+    restart: always
+    ports:
+      - "8000:8094"
+    depends_on:
+      - mysql
+      - redis
+    links:
+      - mysql
+      - redis
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: chatboom
+      MYSQL_PASSWORD: chatboom123456!
+      MYSQL_DB: chatboom
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ""
+      REDIS_DB: 0
+      SERVE_STATIC: "true"
+    volumes:
+      - ./config:/config
+      - ./logs:/logs
+      - ./storage:/storage
+    networks:
+      - chatboom-network
 
 networks:
   chatboom-network:

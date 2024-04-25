@@ -7,6 +7,7 @@ type BillingChartProps = {
     labels: string[];
     datasets: number[];
 };
+
 function BillingChart({ labels, datasets }: BillingChartProps) {
     const { t } = useTranslation();
 

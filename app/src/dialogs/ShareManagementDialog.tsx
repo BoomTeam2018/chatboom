@@ -2,10 +2,11 @@ import '@/assets/pages/share-manager.less';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    dialogSelector,
     dataSelector,
-    syncData,
-    deleteData
+    deleteData,
+    dialogSelector,
+    setDialog,
+    syncData
 } from '@/store/sharing.ts';
 import { useToast } from '@/components/ui/use-toast.ts';
 import { selectAuthenticated, selectInit } from '@/store/auth.ts';
@@ -17,7 +18,6 @@ import {
     DialogHeader,
     DialogTitle
 } from '@/components/ui/dialog.tsx';
-import { setDialog } from '@/store/sharing.ts';
 import { Button } from '@/components/ui/button.tsx';
 import { useMemo } from 'react';
 import {
