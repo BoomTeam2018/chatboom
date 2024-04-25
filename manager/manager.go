@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -139,36 +140,39 @@ func checkSensitive(message string) bool {
 	// 替换为你的Java微服务的URL
 	url := "http://localhost:8081/api/sensitive/check"
 
-	// 创建请求体
+	log.Printf("make request body")
 	requestData := globals.SensitiveRequest{
 		Content: message,
 	}
 	jsonData, err := json.Marshal(requestData)
+	log.Printf("marshal requestData")
 	if err != nil {
-		fmt.Errorf("Error occurred during marshalling: %v", err)
+		log.Printf("Error occurred during marshalling: %v", err)
 		return false
 	}
 
 	// 发送请求
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonData))
+	log.Printf("sending....")
 	if err != nil {
-		fmt.Errorf("Error occurred during HTTP POST: %v", err)
+		log.Printf("Error occurred during HTTP POST: %v", err)
 		return false
 	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Errorf("Error reading response: %v", err)
+		log.Printf("Error reading response body: %v", err)
 		return false
 	}
 
-	var response globals.SensitiveResponse
-	err = json.Unmarshal(body, &response)
+	var isSensitive bool
+	err = json.Unmarshal(body, &isSensitive)
 	if err != nil {
-		fmt.Errorf("Error unmarshalling response: %v", err)
+		log.Printf("Error unmarshalling response: %v", err)
 		return false
 	}
 
-	return response.Sensitive
+	log.Printf("Received response: Sensitive=%v", isSensitive)
+	return isSensitive
 }
