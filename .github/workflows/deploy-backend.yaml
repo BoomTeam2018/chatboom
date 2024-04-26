@@ -1,4 +1,4 @@
-name: Deploy Application
+name: Deploy Backend
 
 on:
   workflow_run:
