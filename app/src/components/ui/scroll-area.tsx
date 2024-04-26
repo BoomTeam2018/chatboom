@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
 
 import { cn } from './lib/utils';
+import '../ui/style/scrollArea.less'
 
 const ScrollArea = React.forwardRef<
     React.ElementRef<typeof ScrollAreaPrimitive.Root>,
@@ -13,7 +14,7 @@ const ScrollArea = React.forwardRef<
     >
         <ScrollAreaPrimitive.Viewport
             ref={ref}
-            className="scrollarea-viewport h-full w-full rounded-[inherit]"
+            className="ScrollAreaViewport scrollarea-viewport h-full w-full rounded-[inherit]"
         >
             {children}
         </ScrollAreaPrimitive.Viewport>
