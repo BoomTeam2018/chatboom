@@ -9,6 +9,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      VITE_BACKEND_ENDPOINT: ${{ secrets.SERVER_IP }}:${{ secrets.PORT }}/api
     strategy:
       matrix:
         node-version: [ 18.x ]
