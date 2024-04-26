@@ -2,7 +2,7 @@ name: Deploy Frontend
 
 on:
   workflow_run:
-    workflows: [ "Docker Image CI" ]
+    workflows: [ "Build Test" ]
     types:
       - completed
 

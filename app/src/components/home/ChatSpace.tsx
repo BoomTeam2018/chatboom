@@ -27,6 +27,7 @@ import {
 } from '@/store/info.ts';
 import Markdown from '@/components/Markdown.tsx';
 import { hitGroup } from '@/utils/groups.ts';
+import { selectModel, selectSupportModels } from '@/store/chat.ts';
 
 function Footer() {
     const auth = useSelector(selectAuthenticated);
@@ -52,6 +53,12 @@ function ChatSpace() {
 
     const articleGroup = useSelector(infoArticleSelector);
     const article = hitGroup(articleGroup);
+
+    const currentModelId = useSelector(selectModel);
+    const supportModels = useSelector(selectSupportModels);
+    const currentModel = supportModels.find(
+        model => model.id === currentModelId
+    );
 
     return (
         <div className={`chat-product`}>
@@ -95,7 +102,15 @@ function ChatSpace() {
                     <ChevronRight className={`h-4 w-4 ml-2`} />
                 </Button>
             )}
-
+            {currentModel && (
+                <div className="transition duration-300 ease-in-out transform shadow-lg p-4 rounded-lg bg-white mt-4">
+                    <h2 className="text-xl font-semibold text-gray-800">
+                        <span className="text-blue-500">
+                            {currentModel.name}
+                        </span>
+                    </h2>
+                </div>
+            )}
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent className={`flex-dialog`}>
                     <DialogHeader>
