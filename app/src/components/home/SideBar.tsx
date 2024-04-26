@@ -452,40 +452,34 @@ function SideBar() {
             <div className="sidebar-product">
                 <SidebarProduct />
             </div>
-            {auth ? (
-                <div className={`sidebar-content`}>
-                    <SidebarAction
-                        setOperateConversation={setOperateConversation}
-                    />
-                    <SidebarConversationList
-                        operateConversation={operateConversation}
-                        setOperateConversation={setOperateConversation}
-                    />
+            <div className={`sidebar-content`}>
+                <SidebarAction
+                    setOperateConversation={setOperateConversation}
+                />
+                <SidebarConversationList
+                    operateConversation={operateConversation}
+                    setOperateConversation={setOperateConversation}
+                />
+                {auth ? (
                     <SidebarMenu />
-                </div>
-            ) : (
-                <div className={`sidebar-content`}>
-                    <SidebarAction
-                        setOperateConversation={setOperateConversation}
-                    />
-                    <SidebarConversationList
-                        operateConversation={operateConversation}
-                        setOperateConversation={setOperateConversation}
-                    />
+                ) : (
                     <div className={`sidebar-menu`}>
                         <MenuBar className={`menu-bar`}>
                             <Button
                                 className={`login-action`}
                                 variant={`default`}
                                 onClick={goAuth}
+                                style={{
+                                    height: '34px',
+                                }}
                             >
-                                <LogIn className={`h-3 w-3 mr-2`} />{' '}
+                                <LogIn className={`h-3 w-3 mr-2 mb-0.5`} />
                                 {t('login')}
                             </Button>
                         </MenuBar>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 }
