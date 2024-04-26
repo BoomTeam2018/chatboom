@@ -86,8 +86,18 @@ func ChatAPI(c *gin.Context) {
 
 	buf := NewConnection(conn, authenticated, hash, 10)
 	buf.Handle(func(form *conversation.FormMessage) error {
+		cancelChan := make(chan bool, 1)
 		switch form.Type {
 		case ChatType:
+			messageProcessed := make(chan bool, 1)
+			go func() {
+				if instance.HandleMessage(db, form) {
+					response := ChatHandler(buf, user, instance, false)
+					instance.SaveResponse(db, response)
+				}
+				messageProcessed <- true
+			}()
+
 			go func() {
 				sensitive := checkSensitive(form.Message)
 				if sensitive {
@@ -97,12 +107,25 @@ func ChatAPI(c *gin.Context) {
 							Message: err.Error(),
 							End:     true,
 						})
+					cancelChan <- true // 发送中断信号
+				} else {
+					cancelChan <- false
 				}
 			}()
-			if instance.HandleMessage(db, form) {
-				response := ChatHandler(buf, user, instance, false)
-				instance.SaveResponse(db, response)
+
+			select {
+			case shouldCancel := <-cancelChan:
+				if shouldCancel {
+					id, err := getId(form.Message)
+					if err != nil {
+						return err
+					}
+					instance.RemoveMessage(id)
+					instance.SaveConversation(db)
+				}
+			case <-messageProcessed:
 			}
+
 		case StopType:
 			break
 		case ShareType:
