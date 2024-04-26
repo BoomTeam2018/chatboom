@@ -183,7 +183,7 @@ const PaginationAction = ({
                         <PaginationEllipsis />
                     </PaginationItem>
                 )}
-                {(current < total - 1)&&(current < total - 2) && (
+                {current < total - 1 && current < total - 2 && (
                     <PaginationItem onClick={() => onPageChange(total - 1)}>
                         <PaginationLink>{total}</PaginationLink>
                     </PaginationItem>

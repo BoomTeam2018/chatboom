@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -86,46 +85,22 @@ func ChatAPI(c *gin.Context) {
 
 	buf := NewConnection(conn, authenticated, hash, 10)
 	buf.Handle(func(form *conversation.FormMessage) error {
-		cancelChan := make(chan bool, 1)
+
 		switch form.Type {
 		case ChatType:
-			messageProcessed := make(chan bool, 1)
-			go func() {
+			sensitive := checkSensitive(form.Message)
+			if sensitive {
+				buf.Send(
+					globals.ChatSegmentResponse{
+						Message: "您的消息可能违反了我们的内容政策，请确保消息合规！",
+						End:     true,
+					})
+			} else {
 				if instance.HandleMessage(db, form) {
 					response := ChatHandler(buf, user, instance, false)
 					instance.SaveResponse(db, response)
 				}
-				messageProcessed <- true
-			}()
-
-			go func() {
-				sensitive := checkSensitive(form.Message)
-				if sensitive {
-					err := &SensitiveError{Message: "该内容可能违规！！", Code: 756}
-					buf.Send(
-						globals.ChatSegmentResponse{
-							Message: err.Error(),
-							End:     true,
-						})
-					cancelChan <- true // 发送中断信号
-				} else {
-					cancelChan <- false
-				}
-			}()
-
-			select {
-			case shouldCancel := <-cancelChan:
-				if shouldCancel {
-					id, err := getId(form.Message)
-					if err != nil {
-						return err
-					}
-					instance.RemoveMessage(id)
-					instance.SaveConversation(db)
-				}
-			case <-messageProcessed:
 			}
-
 		case StopType:
 			break
 		case ShareType:
@@ -160,42 +135,27 @@ func ChatAPI(c *gin.Context) {
 }
 
 func checkSensitive(message string) bool {
-	// 替换为你的Java微服务的URL
 	url := "http://localhost:8081/api/sensitive/check"
-
-	log.Printf("make request body")
 	requestData := globals.SensitiveRequest{
 		Content: message,
 	}
 	jsonData, err := json.Marshal(requestData)
-	log.Printf("marshal requestData")
 	if err != nil {
-		log.Printf("Error occurred during marshalling: %v", err)
 		return false
 	}
-
-	// 发送请求
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonData))
-	log.Printf("sending....")
 	if err != nil {
-		log.Printf("Error occurred during HTTP POST: %v", err)
 		return false
 	}
 	defer resp.Body.Close()
-
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Printf("Error reading response body: %v", err)
 		return false
 	}
-
 	var isSensitive bool
 	err = json.Unmarshal(body, &isSensitive)
 	if err != nil {
-		log.Printf("Error unmarshalling response: %v", err)
 		return false
 	}
-
-	log.Printf("Received response: Sensitive=%v", isSensitive)
 	return isSensitive
 }
