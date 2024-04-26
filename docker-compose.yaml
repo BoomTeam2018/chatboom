@@ -28,7 +28,7 @@ services:
       - chatboom-network
 
   chatboom:
-    image: ${DOCKER_USERNAME}/chatboom
+    image: ${DOCKER_USERNAME}/chatboom:latest
     container_name: chatboom
     restart: always
     ports:
