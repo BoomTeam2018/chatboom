@@ -28,6 +28,7 @@ import {
 import Markdown from '@/components/Markdown.tsx';
 import { hitGroup } from '@/utils/groups.ts';
 import { selectModel, selectSupportModels } from '@/store/chat.ts';
+import {SimpleModelItem} from "@/components/home/ModelMarket.tsx";
 
 function Footer() {
     const auth = useSelector(selectAuthenticated);
@@ -103,14 +104,9 @@ function ChatSpace() {
                 </Button>
             )}
             {currentModel && (
-                <div className="transition duration-300 ease-in-out transform shadow-lg p-4 rounded-lg bg-white mt-4">
-                    <h2 className="text-xl font-semibold text-gray-800">
-                        <span className="text-blue-500">
-                            {currentModel.name}
-                        </span>
-                    </h2>
-                </div>
+                <SimpleModelItem/>
             )}
+
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent className={`flex-dialog`}>
                     <DialogHeader>

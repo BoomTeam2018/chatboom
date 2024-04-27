@@ -451,4 +451,33 @@ function ModelMarket() {
     );
 }
 
-export default ModelMarket;
+function SimpleModelItem() {
+    const currentModelId = useSelector(selectModel);
+    const supportModels = useSelector(selectSupportModels);
+    const currentModel = supportModels.find(
+        model => model.id === currentModelId
+    );
+
+    if (!currentModel) return null;
+
+    const avatar = isUrl(currentModel.avatar)
+        ? currentModel.avatar
+        : `/icons/${currentModel.avatar}`;
+
+    return (
+        <div
+            className={`model-item flex items-center p-4`}>
+            <img
+                className="model-avatar w-10 h-10 rounded-full mr-4"
+                src={avatar}
+                alt={currentModel.name}
+                loading="lazy"
+            />
+            <div className={`model-info`}>
+                <p className={`model-name`}>{currentModel.name}</p>
+            </div>
+        </div>
+    );
+}
+
+export {ModelMarket, SimpleModelItem};
