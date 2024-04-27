@@ -470,7 +470,7 @@ function SideBar() {
                                 variant={`default`}
                                 onClick={goAuth}
                                 style={{
-                                    height: '34px',
+                                    height: '34px'
                                 }}
                             >
                                 <LogIn className={`h-3 w-3 mr-2 mb-0.5`} />

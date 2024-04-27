@@ -679,9 +679,7 @@ function MarketItem({
                     <span>{t('admin.market.model-suggestedInputs')}</span>
                     <Textarea
                         value={model.suggestedInputs || ''}
-                        placeholder={t(
-                            'admin.market.model-suggestedInputs'
-                        )}
+                        placeholder={t('admin.market.model-suggestedInputs')}
                         onChange={e => {
                             dispatch({
                                 type: 'update-suggestedInputs',

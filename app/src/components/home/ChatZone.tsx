@@ -4,15 +4,15 @@ import { SimpleModelItem } from '@/components/home/ModelMarket.tsx';
 
 function ModelTextDisplay() {
     const currentModelId = useSelector(selectModel);
-    console.log('currentModelId', currentModelId)
+    console.log('currentModelId', currentModelId);
     const supportModels = useSelector(selectSupportModels);
-    console.log('supportModels', supportModels)
+    console.log('supportModels', supportModels);
     const currentModel = supportModels.find(
         model => model.id === currentModelId
     );
-    console.log('currentModel', currentModel)
+    console.log('currentModel', currentModel);
     const textInfo = currentModel?.suggestedInputs || 'No suggested inputs.';
-    console.log('textInfo', textInfo)
+    console.log('textInfo', textInfo);
     return (
         <div className="border p-4 border-gray-300 rounded-lg">
             <p>{textInfo}</p>

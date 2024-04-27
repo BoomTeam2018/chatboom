@@ -465,8 +465,7 @@ function SimpleModelItem() {
         : `/icons/${currentModel.avatar}`;
 
     return (
-        <div
-            className={`model-item flex items-center p-4`}>
+        <div className={`model-item flex items-center p-4`}>
             <img
                 className="model-avatar w-10 h-10 rounded-full mr-4"
                 src={avatar}
@@ -480,4 +479,4 @@ function SimpleModelItem() {
     );
 }
 
-export {ModelMarket, SimpleModelItem};
+export { ModelMarket, SimpleModelItem };
