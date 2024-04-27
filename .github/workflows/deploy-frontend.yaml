@@ -13,9 +13,6 @@ jobs:
 
       - name: Download Build Artifact
         uses: actions/download-artifact@v4.0.0
-        with:
-          name: Build result
-
 
       - name: Extract Artifact
         run: |
