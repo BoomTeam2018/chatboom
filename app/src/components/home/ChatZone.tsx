@@ -3,7 +3,16 @@ import { selectModel, selectSupportModels } from '@/store/chat.ts';
 import { SimpleModelItem } from '@/components/home/ModelMarket.tsx';
 
 function ModelTextDisplay() {
-    const textInfo = useSelector(selectModel);
+    const currentModelId = useSelector(selectModel);
+    console.log('currentModelId', currentModelId)
+    const supportModels = useSelector(selectSupportModels);
+    console.log('supportModels', supportModels)
+    const currentModel = supportModels.find(
+        model => model.id === currentModelId
+    );
+    console.log('currentModel', currentModel)
+    const textInfo = currentModel?.suggestedInputs || 'No suggested inputs.';
+    console.log('textInfo', textInfo)
     return (
         <div className="border p-4 border-gray-300 rounded-lg">
             <p>{textInfo}</p>
