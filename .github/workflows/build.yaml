@@ -8,7 +8,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     env:
-      VITE_BACKEND_ENDPOINT: ${{ secrets.SERVER_IP }}:${{ secrets.PORT }}/api
+      VITE_BACKEND_ENDPOINT: http://${{ secrets.SERVER_IP }}:${{ secrets.PORT }}/api
     strategy:
       matrix:
         node-version: [ 18.x ]
@@ -36,7 +36,9 @@ jobs:
           npm install -g pnpm
           pnpm install
           pnpm build
+
       - name: Upload a Build Artifact
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4
         with:
           name: built-frontend
