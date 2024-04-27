@@ -685,9 +685,11 @@
         flex-grow: 1;
         width: 100%;
         overflow: hidden;
-        justify-content: center;
         align-items: center;
 
+        .filler {
+            flex-grow: 1; /* 这将使填充容器扩展并占据空余空间 */
+        }
         button {
             margin: 0.5rem 0;
             white-space: nowrap;

@@ -32,10 +32,14 @@ function ChatZone() {
     return (
         <div className={`chat-zone`}>
             {currentModel && (
-                <div>
+                <>
+                    <div className="filler"></div> {/* 上方的填充容器 */}
                     <SimpleModelItem />
-                    <ModelDisplayGrid />
-                </div>
+                    <div className="filler"></div> {/* 下方的填充容器 */}
+                    <div style={{ width: '100%' }}>
+                        <ModelDisplayGrid />
+                    </div>
+                </>
             )}
         </div>
     );
