@@ -54,11 +54,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: built-frontend
+          path: app/dist
 
       - name: Extract Artifact
         run: |
           mkdir -p app/dist
-          mv "built-frontend"/* app/dist/
+          mv app/dist/* app/dist/
 
       - name: Setup SSH Keys
         uses: webfactory/ssh-agent@v0.5.3
@@ -71,4 +72,4 @@ jobs:
 
       - name: Copy build artifacts to the server
         run: |
-          scp -r app/dist ${{ secrets.SERVER_USER }}@${{ secrets.FRONT_SERVER_IP }}:/var/www/html
+          scp -r app/dist/* ${{ secrets.SERVER_USER }}@${{ secrets.FRONT_SERVER_IP }}:/var/www/html/
