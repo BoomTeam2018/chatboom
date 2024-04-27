@@ -28,7 +28,7 @@ import {
 import Markdown from '@/components/Markdown.tsx';
 import { hitGroup } from '@/utils/groups.ts';
 import { selectModel, selectSupportModels } from '@/store/chat.ts';
-import {SimpleModelItem} from "@/components/home/ModelMarket.tsx";
+import { SimpleModelItem } from '@/components/home/ModelMarket.tsx';
 
 function Footer() {
     const auth = useSelector(selectAuthenticated);
@@ -36,11 +36,30 @@ function Footer() {
     const auth_footer = useSelector(infoAuthFooterSelector);
 
     if (auth && auth_footer) {
-        // hide footer
         return null;
     }
 
     return footer.length > 0 && <Markdown acceptHtml={true}>{footer}</Markdown>;
+}
+
+function ModelTextDisplay() {
+    const textInfo = useSelector(selectModel);
+    return (
+        <div className="border p-4 border-gray-300 rounded-lg">
+            <p>{textInfo}</p>
+        </div>
+    );
+}
+
+function ModelDisplayGrid() {
+    return (
+        <div className="grid grid-cols-2 gap-4 p-4">
+            <ModelTextDisplay />
+            <ModelTextDisplay />
+            <ModelTextDisplay />
+            <ModelTextDisplay />
+        </div>
+    );
 }
 
 function ChatSpace() {
@@ -104,7 +123,10 @@ function ChatSpace() {
                 </Button>
             )}
             {currentModel && (
-                <SimpleModelItem/>
+                <div>
+                    <SimpleModelItem />
+                    <ModelDisplayGrid />
+                </div>
             )}
 
             <Dialog open={open} onOpenChange={setOpen}>
