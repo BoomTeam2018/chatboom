@@ -189,6 +189,18 @@ function reducer(state: MarketForm, action: any): MarketForm {
                     return model;
                 })
             ];
+        case 'update-suggestedInputs':
+            return [
+                ...state.map((model, idx) => {
+                    if (idx === action.payload.idx) {
+                        return {
+                            ...model,
+                            suggestedInputs: action.payload.suggestedInputs
+                        };
+                    }
+                    return model;
+                })
+            ];
         case 'update-context':
             return [
                 ...state.map((model, idx) => {
@@ -661,6 +673,24 @@ function MarketItem({
                         image={model.avatar}
                         idx={index}
                         dispatch={dispatch}
+                    />
+                </div>
+                <div className={`market-row`}>
+                    <span>{t('admin.market.model-suggestedInputs')}</span>
+                    <Textarea
+                        value={model.suggestedInputs || ''}
+                        placeholder={t(
+                            'admin.market.model-suggestedInputs'
+                        )}
+                        onChange={e => {
+                            dispatch({
+                                type: 'update-suggestedInputs',
+                                payload: {
+                                    idx: index,
+                                    suggestedInputs: e.target.value
+                                }
+                            });
+                        }}
                     />
                 </div>
                 <Actions />

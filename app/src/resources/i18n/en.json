@@ -609,6 +609,7 @@
             "model-is-default": "Default Model",
             "model-is-default-tip": "Whether the model is added to the default model list (models not added to the default model list will not appear in the home model list by default)",
             "model-tag": "Model label",
+            "model-suggestedInputs": "Suggested Inputs",
             "update-success": "Upgrade successful",
             "update-success-prompt": "Model Marketplace updated successfully (refresh your browser to apply now)",
             "update-failed": "Update failed",

@@ -614,6 +614,7 @@
             "update-failed": "更新に失敗",
             "update-failed-prompt": "{{reason}}の更新リクエストが失敗しました",
             "model-image": "モデル写真",
+            "model-suggestedInputs": "入力ヒント",
             "custom-image": "カスタム画像",
             "custom-image-placeholder": "画像リンクを入力してください",
             "update": "更新",

@@ -42,7 +42,7 @@ export type Model = {
     high_context: boolean;
     avatar: string;
     tag?: string[];
-
+    suggestedInputs?: string[4];
     price?: ChargeBaseProps;
 };
 
