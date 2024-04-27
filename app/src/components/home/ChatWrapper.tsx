@@ -19,7 +19,7 @@ import { useToast } from '@/components/ui/use-toast.ts';
 import { ToastAction } from '@/components/ui/toast.tsx';
 import { alignSelector } from '@/store/settings.ts';
 import { FileArray } from '@/api/file.ts';
-import ChatSpace from '@/components/home/ChatSpace.tsx';
+import ChatZone from '@/components/home/ChatZone.tsx';
 import ActionButton from '@/components/home/assemblies/ActionButton.tsx';
 import ChatInput from '@/components/home/assemblies/ChatInput.tsx';
 import { cn } from '@/components/ui/lib/utils.ts';
@@ -167,7 +167,7 @@ function ChatWrapper() {
                         showScrollDownButton={showScrollDownButton}
                     />
                 ) : (
-                    <ChatSpace />
+                    <ChatZone />
                 )}
                 <div className={`chat-input`}>
                     <div className={`input-wrapper`}>
