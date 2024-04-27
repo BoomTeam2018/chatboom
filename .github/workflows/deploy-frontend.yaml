@@ -2,7 +2,7 @@ name: Deploy Frontend
 
 on:
   workflow_run:
-    workflows: [ "Build Test" ]
+    workflows: [ "Deploy Backend" ]
     types:
       - completed
 
@@ -12,14 +12,14 @@ jobs:
 
     steps:
       - name: Download Build Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.0.0
         with:
           name: Build result
 
       - name: Extract Artifact
         run: |
           mkdir -p app/dist
-          mv Build\ result/* app/dist/
+          mv "Build result"/* app/dist/
 
       - name: Setup SSH Keys
         uses: webfactory/ssh-agent@v0.5.3
