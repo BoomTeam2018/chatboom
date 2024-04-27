@@ -56,11 +56,6 @@ jobs:
           name: built-frontend
           path: app/dist
 
-      - name: Extract Artifact
-        run: |
-          mkdir -p app/dist
-          mv app/dist/* app/dist/
-
       - name: Setup SSH Keys
         uses: webfactory/ssh-agent@v0.5.3
         with:
