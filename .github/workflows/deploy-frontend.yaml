@@ -9,23 +9,13 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.ref == 'refs/heads/main' }}
     steps:
-      - name: List available artifacts
-        uses: actions/github-script@v5
-        with:
-          script: |
-            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              run_id: github.event.workflow_run.id
-            });
-            console.log(artifacts.data);
 
       - name: Download Build Artifact
         uses: actions/download-artifact@v4.0.0
         with:
           name: Build result
+
 
       - name: Extract Artifact
         run: |
