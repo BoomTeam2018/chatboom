@@ -8,13 +8,14 @@ import (
 
 type ModelTag []string
 type MarketModel struct {
-	Id          string   `json:"id" mapstructure:"id" required:"true"`
-	Name        string   `json:"name" mapstructure:"name" required:"true"`
-	Description string   `json:"description" mapstructure:"description"`
-	Default     bool     `json:"default" mapstructure:"default"`
-	HighContext bool     `json:"high_context" mapstructure:"high_context"`
-	Avatar      string   `json:"avatar" mapstructure:"avatar"`
-	Tag         ModelTag `json:"tag" mapstructure:"tag"`
+	Id              string   `json:"id" mapstructure:"id" required:"true"`
+	Name            string   `json:"name" mapstructure:"name" required:"true"`
+	Description     string   `json:"description" mapstructure:"description"`
+	Default         bool     `json:"default" mapstructure:"default"`
+	HighContext     bool     `json:"high_context" mapstructure:"high_context"`
+	Avatar          string   `json:"avatar" mapstructure:"avatar"`
+	Tag             ModelTag `json:"tag" mapstructure:"tag"`
+	SuggestedInputs string   `json:"suggested_inputs" mapstructure:"suggested_inputs"`
 }
 type MarketModelList []MarketModel
 
