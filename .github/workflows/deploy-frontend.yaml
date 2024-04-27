@@ -2,7 +2,7 @@ name: Deploy Frontend
 
 on:
   workflow_run:
-    workflows: [ "Deploy Backend" ]
+    workflows: [ "Build Test" ]
     types:
       - completed
 
