@@ -37,7 +37,7 @@ jobs:
           pnpm install
           pnpm build
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4
         with:
-          name: Build result
+          name: built-frontend
           path: app/dist
