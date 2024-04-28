@@ -27,8 +27,17 @@ services:
     networks:
       - chatboom-network
 
+  javaMicro:
+    image: ethst/sensitive:latest
+    container_name: sensitive
+    restart: always
+    expose:
+      - "8081"
+    networks:
+      - chatboom-network
+      -
   chatboom:
-    image: ${DOCKER_USERNAME}/chatboom:latest
+    image: ethst/chatboom:latest
     container_name: chatboom
     restart: always
     ports:

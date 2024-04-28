@@ -28,7 +28,7 @@ services:
       - chatboom-network
 
   javaMicro:
-    image: ${DOCKER_USERNAME}/sensitive:latest
+    image: ethst/sensitive:latest
     container_name: sensitive
     restart: always
     expose:
@@ -37,7 +37,7 @@ services:
       - chatboom-network
 
   chatboom:
-    image: ${DOCKER_USERNAME}/chatboom:latest
+    image: ethst/chatboom:latest
     container_name: chatboom
     restart: always
     ports:
