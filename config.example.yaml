@@ -21,6 +21,9 @@ server:
   cert_file: ""
   key_file: ""
 
+java_microservice:
+  base_url: "http://javaMicro:8081"
+
 system:
   general:
     backend: ""

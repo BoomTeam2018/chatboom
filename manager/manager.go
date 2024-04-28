@@ -9,11 +9,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
 )
+
+const warningCN = "您的消息可能违反了我们的内容政策，请确保消息合规！"
 
 type WebsocketAuthForm struct {
 	Token string `json:"token" binding:"required"`
@@ -92,7 +95,7 @@ func ChatAPI(c *gin.Context) {
 			if sensitive {
 				buf.Send(
 					globals.ChatSegmentResponse{
-						Message: "您的消息可能违反了我们的内容政策，请确保消息合规！",
+						Message: warningCN,
 						End:     true,
 					})
 			} else {
@@ -134,8 +137,11 @@ func ChatAPI(c *gin.Context) {
 	})
 }
 
+var baseURL = viper.GetString("java_microservice.base_url")
+
 func checkSensitive(message string) bool {
-	url := "http://localhost:8081/api/sensitive/check"
+	url := fmt.Sprintf("%s/api/sensitive/check", baseURL)
+
 	requestData := globals.SensitiveRequest{
 		Content: message,
 	}
