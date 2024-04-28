@@ -29,3 +29,5 @@ db
 .env
 .env.test
 .env.production
+
+.idea/
