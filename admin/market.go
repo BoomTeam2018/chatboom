@@ -15,7 +15,7 @@ type MarketModel struct {
 	HighContext     bool     `json:"high_context" mapstructure:"high_context"`
 	Avatar          string   `json:"avatar" mapstructure:"avatar"`
 	Tag             ModelTag `json:"tag" mapstructure:"tag"`
-	SuggestedInputs string   `json:"suggested_inputs" mapstructure:"suggested_inputs"`
+	SuggestedInputs string   `json:"suggestedInputs" mapstructure:"suggested_inputs"`
 }
 type MarketModelList []MarketModel
 
