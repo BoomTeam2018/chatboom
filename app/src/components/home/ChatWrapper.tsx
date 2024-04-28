@@ -167,7 +167,7 @@ function ChatWrapper() {
                         showScrollDownButton={showScrollDownButton}
                     />
                 ) : (
-                    <ChatZone />
+                    <ChatZone setSuggestInput={setInput} />
                 )}
                 <div className={`chat-input`}>
                     <div className={`input-wrapper`}>

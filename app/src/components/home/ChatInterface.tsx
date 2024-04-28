@@ -38,17 +38,23 @@ const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps>(
         useEffect(() => {
             const el = (ref as MutableRefObject<HTMLDivElement | null>).current;
             if (el) {
-                const handleWheel = (event: WheelEvent) => {
-                    if (event.deltaY < 0) {
+                const handleWheel = () => {
+                    const isScrollUp =
+                        ref?.current?.scrollHeight >
+                        ref?.current?.scrollTop + ref?.current?.clientHeight;
+                    if (isScrollUp) {
                         // 检测向上滚动
                         setAutoScroll(false);
                         setShowScrollDownButton(true);
                     }
+                    if (!isScrollUp) {
+                        setShowScrollDownButton(false);
+                    }
                 };
-                el.addEventListener('wheel', handleWheel);
+                el.addEventListener('scroll', handleWheel);
                 return () => {
                     if (el) {
-                        el.removeEventListener('wheel', handleWheel);
+                        el.removeEventListener('scroll', handleWheel);
                     }
                 };
             }
@@ -64,7 +70,9 @@ const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps>(
         }, [messages, autoScroll, ref]);
         React.useEffect(() => {
             setAutoScroll(needScroll);
-            setShowScrollDownButton(false);
+            if (ref?.current?.scrollHeight > ref?.current?.clientHeight) {
+                setShowScrollDownButton(true);
+            }
         }, [needScroll]);
 
         useEffect(() => {
@@ -112,7 +120,7 @@ const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps>(
                 {showScrollDownButton && (
                     <Button
                         className="scroll-down-btn"
-                        style={{ position: 'sticky', bottom: '10px' }} // CSS for sticky positioning
+                        style={{ position: 'absolute', bottom: '10px' }} // CSS for sticky positioning
                         onClick={scrollToBottom}
                     >
                         <ArrowCircleDown
