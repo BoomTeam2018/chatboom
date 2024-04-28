@@ -27,3 +27,4 @@ db
 redis
 config
 output.log
+.env
