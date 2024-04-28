@@ -1,17 +1,21 @@
 name: Deploy Backend
 
 on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Docker image tag to deploy (default is latest)'
+        required: false
+        default: 'latest'
   workflow_run:
-    workflows: [ "Docker Image CI" ]
+    workflows: [ "Docker Image CD" ]
     types:
       - completed
 
 jobs:
-  deploy:
+  deploy-backend:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
-
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -35,8 +39,17 @@ jobs:
             export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
             export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
             export MYSQL_HOST=${{ secrets.MYSQL_HOST }}
-            docker-compose pull
+            docker-compose pull ${DOCKER_IMAGE}:${{ steps.set_tag.outputs.tag }}
             docker-compose up -d
           EOF
         env:
+          DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/chatboom
           DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+      - name: Determine image tag
+        id: set_tag
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "::set-output name=tag::${{ github.event.inputs.tag }}"
+          else
+            echo "::set-output name=tag::stable"
+          fi

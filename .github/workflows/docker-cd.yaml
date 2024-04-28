@@ -1,18 +1,14 @@
-name: Docker CD
+name: Docker Image CD
 
 on:
   release:
     types: [ created ]
 
 jobs:
-
   deploy:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
-
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:

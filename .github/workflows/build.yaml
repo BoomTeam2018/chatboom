@@ -2,13 +2,13 @@ name: Build Test
 on:
   push:
     branches:
-      - '*'
+      - 'test'
+      - 'main'
+  workflow_dispatch:
 
 jobs:
-  release:
+  build-test:
     runs-on: ubuntu-latest
-    env:
-      VITE_BACKEND_ENDPOINT: http://${{ secrets.SERVER_IP }}:${{ secrets.PORT }}/api
     strategy:
       matrix:
         node-version: [ 18.x ]
@@ -31,6 +31,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Build Frontend
+        env:
+          VITE_BACKEND_ENDPOINT: http://${{ secrets.SERVER_IP }}:${{ secrets.PORT }}/api
         run: |
           cd app
           npm install -g pnpm
@@ -46,10 +48,9 @@ jobs:
 
   deploy-frontend:
     runs-on: ubuntu-latest
-    needs: release
+    needs: build-test
     if: github.ref == 'refs/heads/main'
     steps:
-
       - name: Download Build Artifact
         uses: actions/download-artifact@v4
         with:
