@@ -27,6 +27,15 @@ services:
     networks:
       - chatboom-network
 
+  javaMicro:
+    image: ${DOCKER_USERNAME}/sensitive:latest
+    container_name: sensitive
+    restart: always
+    expose:
+      - "8081"
+    networks:
+      - chatboom-network
+
   chatboom:
     image: ${DOCKER_USERNAME}/chatboom:latest
     container_name: chatboom
@@ -36,6 +45,7 @@ services:
     depends_on:
       - mysql
       - redis
+      - javaMicro
     links:
       - mysql
       - redis
