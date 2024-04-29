@@ -34,9 +34,9 @@ const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps>(
         const [selected, setSelected] = React.useState(-1);
         const [autoScroll, setAutoScroll] = useState(needScroll);
         const [showScrollDownButton, setShowScrollDownButton] = useState(false);
-        const el = (ref as MutableRefObject<HTMLDivElement | null>).current;
 
         useEffect(() => {
+            const el = (ref as MutableRefObject<HTMLDivElement | null>).current;
             if (el) {
                 const handleWheel = () => {
                     const isScrollUp =
@@ -68,6 +68,7 @@ const ChatInterface = React.forwardRef<HTMLDivElement, ChatInterfaceProps>(
             }
         }, [messages, autoScroll, ref]);
         useEffect(() => {
+            const el = (ref as MutableRefObject<HTMLDivElement | null>).current;
             setAutoScroll(needScroll);
             if (el && el?.scrollHeight > el?.clientHeight) {
                 setShowScrollDownButton(true);
