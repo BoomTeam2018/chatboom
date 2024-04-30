@@ -529,6 +529,8 @@
             "updateRootRepeatPlaceholder": "新しいrootパスワードをもう一度入力してください",
             "title": "サイト名",
             "titleTip": "サイトタイトルに表示するサイト名、デフォルトの場合は空白のままにします",
+            "sensitiveEndpoint": "センシティブチェックエンドポイント",
+            "sensitiveEndpointPlaceholder": "センシティブチェックのエンドポイント、空白の場合はデフォルト値を使用 http://sensitive:8091",
             "logo": "サイトロゴ",
             "logoTip": "サイトタイトルに表示するサイトロゴへのリンク、デフォルトの場合は空白のままにします（例：{{ logo }}）",
             "backendPlaceholder": "バックエンドコールバックドメイン名、デフォルトで空、コールバックを受け入れるために必要",

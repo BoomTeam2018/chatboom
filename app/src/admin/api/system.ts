@@ -10,6 +10,7 @@ export type whiteList = {
 
 export type GeneralState = {
     title: string;
+    sensitiveEndpoint: string;
     logo: string;
     backend: string;
     docs: string;
@@ -119,6 +120,7 @@ export const initialSystemState: SystemProps = {
     general: {
         logo: '',
         title: '',
+        sensitiveEndpoint: '',
         backend: '',
         docs: '',
         file: '',

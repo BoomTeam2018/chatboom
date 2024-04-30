@@ -694,6 +694,8 @@
             "test": "测试发件",
             "title": "网站名称",
             "titleTip": "网站名称，用于显示在网站标题，留空默认",
+            "sensitiveEndpoint": "敏感词检测站点",
+            "sensitiveEndpointPlaceholder": "敏感检测站点，留空则使用默认值 http://sensitive:8091",
             "logo": "网站 Logo",
             "docs": "文档链接",
             "docsTip": "文档链接，留空默认 https://docs.chatboom.net",

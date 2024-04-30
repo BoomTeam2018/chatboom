@@ -168,6 +168,19 @@ function General({ data, dispatch, onChange }: CompProps<GeneralState>) {
                 />
             </ParagraphItem>
             <ParagraphItem>
+                <Label>{t('admin.system.sensitiveEndpoint')}</Label>
+                <Input
+                  value={data.sensitiveEndpoint}
+                  onChange={e =>
+                    dispatch({
+                        type: 'update:sensitivity.endpoint',
+                        value: e.target.value
+                    })
+                  }
+                  placeholder={t('admin.system.sensitiveEndpointPlaceholder')}  // 提供一个合适的占位符文本
+                />
+            </ParagraphItem>
+            <ParagraphItem>
                 <Label>{t('admin.system.docs')}</Label>
                 <Input
                     value={data.docs}
