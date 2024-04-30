@@ -173,7 +173,7 @@ function General({ data, dispatch, onChange }: CompProps<GeneralState>) {
                   value={data.sensitiveEndpoint}
                   onChange={e =>
                     dispatch({
-                        type: 'update:sensitivity.endpoint',
+                        type: 'update:general.sensitiveEndpoint',
                         value: e.target.value
                     })
                   }

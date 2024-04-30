@@ -25,13 +25,14 @@ type ApiInfo struct {
 }
 
 type generalState struct {
-	Title       string `json:"title" mapstructure:"title"`
-	Logo        string `json:"logo" mapstructure:"logo"`
-	Backend     string `json:"backend" mapstructure:"backend"`
-	File        string `json:"file" mapstructure:"file"`
-	Docs        string `json:"docs" mapstructure:"docs"`
-	PWAManifest string `json:"pwa_manifest" mapstructure:"pwamanifest"`
-	DebugMode   bool   `json:"debug_mode" mapstructure:"debugmode"`
+	Title             string `json:"title" mapstructure:"title"`
+	SensitiveEndpoint string `json:"sensitiveEndpoint" mapstructure:"sensitiveendpoint"`
+	Logo              string `json:"logo" mapstructure:"logo"`
+	Backend           string `json:"backend" mapstructure:"backend"`
+	File              string `json:"file" mapstructure:"file"`
+	Docs              string `json:"docs" mapstructure:"docs"`
+	PWAManifest       string `json:"pwa_manifest" mapstructure:"pwamanifest"`
+	DebugMode         bool   `json:"debug_mode" mapstructure:"debugmode"`
 }
 
 type siteState struct {
