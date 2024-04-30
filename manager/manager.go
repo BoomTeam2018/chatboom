@@ -137,11 +137,8 @@ func ChatAPI(c *gin.Context) {
 	})
 }
 
-var baseURL = viper.GetString("java_microservice.base_url")
-
 func checkSensitive(message string) bool {
-	url := fmt.Sprintf("%s/api/sensitive/check", baseURL)
-
+	url := fmt.Sprintf("%s/api/sensitive/check", viper.GetString("system.general.sensitiveendpoint"))
 	requestData := globals.SensitiveRequest{
 		Content: message,
 	}
