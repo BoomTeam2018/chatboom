@@ -1,7 +1,7 @@
 import * as ClipboardJS from 'clipboard';
 
 export async function copyClipboard(text: string) {
-    let clipboard = new ClipboardJS('.clipboard', {
+    const clipboard = new ClipboardJS('.clipboard', {
         text: function () {
             return text;
         }
