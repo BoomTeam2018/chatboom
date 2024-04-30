@@ -184,7 +184,7 @@ function MessageMenu({
                         </DropdownMenuItem>
                     )
                 )}
-                <DropdownMenuItem
+                <DropdownMenuItem className="clipboard"
                     onClick={() =>
                         copyClipboard(filterMessage(message.content))
                     }
