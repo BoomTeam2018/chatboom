@@ -57,6 +57,6 @@ type SensitiveRequest struct {
 	Content string `json:"message"`
 }
 
-type SensitiveResponse struct {
-	Sensitive bool `json:"sensitive"`
+type ReplacedMessage struct {
+	Message string `json:"message"`
 }

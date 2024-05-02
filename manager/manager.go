@@ -138,7 +138,11 @@ func ChatAPI(c *gin.Context) {
 }
 
 func checkSensitive(message string) bool {
-	url := fmt.Sprintf("%s/api/sensitive/check", viper.GetString("system.general.sensitiveendpoint"))
+	endpoint := viper.GetString("system.general.sensitiveendpoint")
+	if endpoint == "" {
+		return false
+	}
+	url := fmt.Sprintf("%s/api/sensitive/check", endpoint)
 	requestData := globals.SensitiveRequest{
 		Content: message,
 	}
@@ -162,3 +166,39 @@ func checkSensitive(message string) bool {
 	}
 	return isSensitive
 }
+
+//func replaceSensitiveWord(message string) string {
+//	endpoint := viper.GetString("system.general.sensitiveendpoint")
+//	if endpoint == "" {
+//		return message
+//	}
+//
+//	url := fmt.Sprintf("%s/api/sensitive/replaceWith", endpoint)
+//	requestData := globals.SensitiveRequest{
+//		Content: message,
+//	}
+//
+//	jsonData, err := json.Marshal(requestData)
+//	if err != nil {
+//		return message
+//	}
+//
+//	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonData))
+//	if err != nil {
+//		return message
+//	}
+//	defer resp.Body.Close()
+//
+//	body, err := ioutil.ReadAll(resp.Body)
+//	if err != nil {
+//		return message
+//	}
+//
+//	var replacedMessage globals.ReplacedMessage
+//	err = json.Unmarshal(body, &replacedMessage)
+//	if err != nil {
+//		return message
+//	}
+//
+//	return replacedMessage.Message
+//}

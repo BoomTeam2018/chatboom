@@ -127,3 +127,53 @@ func ChatHandler(conn *Connection, user *auth.User, instance *conversation.Conve
 
 	return buffer.ReadWithDefault(defaultMessage)
 }
+
+//
+//func processAndSendRemainingChunks(messageBuffer []*globals.Chunk, conn *Connection, buffer *utils.Buffer, plan bool, fullContent string) {
+//	corresponding := make([]int, len(messageBuffer))
+//	for i, chunk := range messageBuffer {
+//		corresponding[i] = utf8.RuneCountInString(chunk.Content)
+//		fullContent += chunk.Content
+//	}
+//
+//	fullContent = replaceSensitiveWord(fullContent)
+//	newLengths := calculateNewByteLengths(fullContent, corresponding)
+//	currentIndex := 0
+//	for i, chunk := range messageBuffer {
+//		nextIndex := currentIndex + newLengths[i]
+//		if nextIndex > len(fullContent) {
+//			nextIndex = len(fullContent)
+//		}
+//		chunk.Content = fullContent[currentIndex:nextIndex]
+//		currentIndex = nextIndex
+//	}
+//
+//	for _, chunk := range messageBuffer {
+//		conn.SendClient(globals.ChatSegmentResponse{
+//			Message: buffer.WriteChunk(chunk),
+//			Quota:   buffer.GetQuota(),
+//			End:     false,
+//			Plan:    plan,
+//		})
+//	}
+//}
+//
+//func calculateNewByteLengths(modified string, corresponding []int) []int {
+//	newLengths := make([]int, len(corresponding))
+//	modifiedIndex := 0
+//	for i, numChars := range corresponding {
+//		modifiedEndIndex := runeIndex(modified, modifiedIndex, numChars)
+//		newLengths[i] = modifiedEndIndex - modifiedIndex
+//		modifiedIndex = modifiedEndIndex
+//	}
+//	return newLengths
+//}
+//
+//func runeIndex(s string, start int, n int) int {
+//	end := start
+//	for i := 0; i < n && end < len(s); i++ {
+//		_, size := utf8.DecodeRuneInString(s[end:])
+//		end += size
+//	}
+//	return end
+//}

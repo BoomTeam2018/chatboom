@@ -6,52 +6,13 @@ on:
       - 'v*'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ 18.x ]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Use Golang
-        uses: actions/setup-go@v4
-        with:
-          go-version: '1.20'
-
-      - name: Build Backend
-        run: |
-          go build .
-
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Build Frontend
-        env:
-          VITE_BACKEND_ENDPOINT: http://${{ secrets.SERVER_IP }}:${{ secrets.PORT }}/api
-        run: |
-          cd app
-          npm install -g pnpm
-          pnpm install
-          pnpm build
-
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: built-frontend
-          path: app/dist
-
-  create-release:
-    needs: build
+  create-release-draft:
     runs-on: ubuntu-latest
     steps:
-      - name: Create Release
+      - name: Create Release Draft
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
         with:
           tag_name: ${{ github.ref_name }}
           release_name: Release ${{ github.ref_name }}

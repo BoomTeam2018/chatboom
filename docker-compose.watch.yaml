@@ -14,7 +14,7 @@ services:
     volumes:
       - ./db:/var/lib/mysql
     networks:
-      - chatboom-network
+      - network
 
   redis:
     image: redis:latest
@@ -25,7 +25,7 @@ services:
     volumes:
       - ./redis:/data
     networks:
-      - chatboom-network
+      - network
 
   javaMicro:
     image: ethst/sensitive:latest
@@ -34,7 +34,7 @@ services:
     expose:
       - "8081"
     networks:
-      - chatboom-network
+      - network
       -
   chatboom:
     image: ethst/chatboom:latest
@@ -67,7 +67,7 @@ services:
       - ./logs:/logs
       - ./storage:/storage
     networks:
-      - chatboom-network
+      - network
 
   watchtower:
     image: containrrr/watchtower
@@ -77,8 +77,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 30
     networks:
-      - chatboom-network
+      - network
 
 networks:
-  chatboom-network:
+  network:
     driver: bridge

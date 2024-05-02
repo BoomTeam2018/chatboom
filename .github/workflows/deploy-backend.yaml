@@ -39,7 +39,8 @@ jobs:
             export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
             export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
             export MYSQL_HOST=${{ secrets.MYSQL_HOST }}
-            docker-compose pull ${DOCKER_IMAGE}:${{ steps.set_tag.outputs.tag }}
+            docker-compose down
+            docker-compose pull
             docker-compose up -d
           EOF
         env:
