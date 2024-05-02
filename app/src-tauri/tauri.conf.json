@@ -52,7 +52,7 @@
         },
         "updater": {
             "active": true,
-            "endpoints": [""],
+            "endpoints": ["https://BoomTeam2018.github.io/chatboom/docs/update.json"],
             "dialog": false,
             "windows": {
                 "installMode": "passive"
