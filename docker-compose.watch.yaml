@@ -27,7 +27,7 @@ services:
     networks:
       - network
 
-  javaMicro:
+  microJava:
     image: ethst/sensitive:latest
     container_name: sensitive
     restart: always
