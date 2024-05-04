@@ -1,7 +1,7 @@
 {
     "$schema": "../node_modules/@tauri-apps/cli/schema.json",
     "build": {
-        "beforeBuildCommand": "pnpm build --mode deeptrain",
+        "beforeBuildCommand": "pnpm build",
         "beforeDevCommand": "pnpm dev",
         "devPath": "http://localhost:5173",
         "distDir": "../dist"
@@ -52,7 +52,9 @@
         },
         "updater": {
             "active": true,
-            "endpoints": ["https://BoomTeam2018.github.io/chatboom/docs/update.json"],
+            "endpoints": [
+                "https://github.com/BoomTeam2018/chatboom/releases/latest/download/latest.json"
+            ],
             "dialog": false,
             "windows": {
                 "installMode": "passive"
