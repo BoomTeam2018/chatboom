@@ -84,6 +84,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+          VITE_BACKEND_ENDPOINT: ${{ secrets.VITE_BACKEND_ENDPOINT }}
         with:
           releaseId: ${{ needs.create-release.outputs.release_id }}
           projectPath: ./app

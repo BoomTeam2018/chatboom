@@ -1,7 +1,7 @@
 {
     "$schema": "../node_modules/@tauri-apps/cli/schema.json",
     "build": {
-        "beforeBuildCommand": "pnpm build --mode deeptrain",
+        "beforeBuildCommand": "pnpm build",
         "beforeDevCommand": "pnpm dev",
         "devPath": "http://localhost:5173",
         "distDir": "../dist"
@@ -52,12 +52,14 @@
         },
         "updater": {
             "active": true,
-            "endpoints": ["https://BoomTeam2018.github.io/chatboom/docs/update.json"],
+            "endpoints": [
+                "https://github.com/BoomTeam2018/chatboom/releases/latest/download/latest.json"
+            ],
             "dialog": false,
             "windows": {
                 "installMode": "passive"
             },
-            "pubkey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzIIb50jAMfuZZ2QaD1A/4vu5D3BBM1p0vb+Z644KF94bNyGoO9kpzBjs/5FV7H4HgEMlIl9+JKQHAsJ61HXOBmq1WFoVRDyee4gN4Hg8OQnN3R/zSm5lkSikiThEqsF95vA9UQRFSMMsKDVUvXfAoe0SCYiEJPjSPYY488kvELE0S5h4iw74QPR+iCMRgyXXGSE+pqT/kJsmxzrDvf+BxfP8sSR9d03En2FNJEAXVlt56rdVZZb8jRQKAkPiQkd3LeC4A0FCsatb1TB8xM73orrkSFzkE6pPqyMqcZXx3T5vnEc86h5DU/6DD2R7b2xGuZ3NKPk28laEbQhDMVhCuQIDAQAB"
+            "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDlEODE4ODUzNkJGQzhBNkMKUldSc2l2eHJVNGlCblIyb29oWFFZanJIeWx0MUtDV3ZYU25vSlFNWHo3YVZYU0ptVytDWkxGWk8K"
         },
         "windows": [
             {
