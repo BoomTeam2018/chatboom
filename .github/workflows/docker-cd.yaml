@@ -2,7 +2,7 @@ name: Docker Image CD
 
 on:
   release:
-    types: [ created ]
+    types: [ published ]
 
 jobs:
   build-docker-image-stable:
