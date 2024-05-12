@@ -45,7 +45,7 @@ services:
     depends_on:
       - mysql
       - redis
-      - javaMicro
+      - microJava
     links:
       - mysql
       - redis
