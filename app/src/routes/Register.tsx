@@ -27,6 +27,8 @@ type CompProps = {
     setNext: (next: boolean) => void;
     setHasAgreed: (next: boolean) => void;
     hasAgreed: boolean;
+    isVisible: boolean;
+    setIsVisible: (next: boolean) => void;
 };
 
 function Preflight({
@@ -34,12 +36,18 @@ function Preflight({
     dispatch,
     setNext,
     setHasAgreed,
-    hasAgreed
+    hasAgreed,
+    isVisible,
+    setIsVisible
 }: CompProps) {
     const { t } = useTranslation();
 
     const onSubmit = () => {
         if (!hasAgreed) {
+            setIsVisible(true);
+            setTimeout(() => {
+                setIsVisible(false);
+            }, 1000);
             return;
         }
         if (
@@ -55,7 +63,7 @@ function Preflight({
     return (
         <div className={`auth-wrapper`}>
             <Label>
-                <Require />
+                {isVisible && <Require />}
                 {t('auth.username')}
                 <LengthRangeRequired
                     content={form.username}
@@ -142,7 +150,9 @@ function Verify({
     dispatch,
     setNext,
     setHasAgreed,
-    hasAgreed
+    hasAgreed,
+    isVisible,
+    setIsVisible
 }: CompProps) {
     const { t } = useTranslation();
     const { toast } = useToast();
@@ -153,6 +163,10 @@ function Verify({
     const onSubmit = async () => {
         const data = doFormat(form);
         if (!hasAgreed) {
+            setIsVisible(true);
+            setTimeout(() => {
+                setIsVisible(false);
+            }, 1000);
             return;
         }
         if (!isEmailValid(data.email)) return;
@@ -181,7 +195,7 @@ function Verify({
     return (
         <div className={`auth-wrapper`}>
             <Label>
-                <Require />
+                {isVisible && <Require />}
                 {t('auth.email')}
                 <EmailRequire content={form.email} hideOnEmpty={true} />
             </Label>
@@ -245,6 +259,7 @@ function Register() {
     const { t } = useTranslation();
     const [next, setNext] = useState(false);
     const [hasAgreed, setHasAgreed] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
     const [form, dispatch] = useReducer(formReducer<RegisterForm>(), {
         username: '',
         password: '',
@@ -269,6 +284,8 @@ function Register() {
                             setNext={setNext}
                             setHasAgreed={setHasAgreed}
                             hasAgreed={hasAgreed}
+                            isVisible={isVisible}
+                            setIsVisible={setIsVisible}
                         />
                     ) : (
                         <Verify
@@ -278,6 +295,8 @@ function Register() {
                             setNext={setNext}
                             setHasAgreed={setHasAgreed}
                             hasAgreed={hasAgreed}
+                            isVisible={isVisible}
+                            setIsVisible={setIsVisible}
                         />
                     )}
                 </CardContent>

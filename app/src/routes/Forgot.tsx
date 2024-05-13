@@ -19,13 +19,15 @@ import { appLogo } from '@/conf/env.ts';
 import { useSelector } from 'react-redux';
 import { infoMailSelector } from '@/store/info.ts';
 import { AlertCircle } from 'lucide-react';
-import { PrivacyPolicy } from '@/components/PrivacyPolicy/index'
+import { PrivacyPolicy } from '@/components/PrivacyPolicy/index';
+import Toast from '@/components/Toast';
 
 function Forgot() {
     const { t } = useTranslation();
     const { toast } = useToast();
     const enabled = useSelector(infoMailSelector);
-    const [hasAgreed, setHasAgreed] =useState(false);
+    const [hasAgreed, setHasAgreed] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
 
     const [form, dispatch] = useReducer(formReducer<ResetForm>(), {
         email: '',
@@ -37,8 +39,12 @@ function Forgot() {
     const onVerify = async () => await sendCode(t, toast, form.email);
 
     const onSubmit = async () => {
-        if(!hasAgreed){
-            return 
+        if (!hasAgreed) {
+            setIsVisible(true)
+            setTimeout(() => {
+                setIsVisible(false);
+            }, 1000);
+            return;
         }
         if (
             !isEmailValid(form.email) ||
@@ -70,6 +76,7 @@ function Forgot() {
     return (
         <div className={`auth-container`}>
             <img className={`logo`} src={appLogo} alt="" />
+            {isVisible && <Toast />}
             <div className={`title`}>{t('auth.reset-password')}</div>
             <Card className={`auth-card`}>
                 <CardContent className={`pb-0`}>
@@ -179,7 +186,6 @@ function Forgot() {
                             {t('reset')}
                         </Button>
                         <PrivacyPolicy setHasAgreed={setHasAgreed} />
-
                     </div>
                 </CardContent>
             </Card>
