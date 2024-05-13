@@ -32,7 +32,7 @@ jobs:
 
       - name: Build Frontend
         env:
-          VITE_BACKEND_ENDPOINT: http://${{ secrets.SERVER_IP }}:${{ secrets.PORT }}/api
+          VITE_BACKEND_ENDPOINT: ${{secrets.VITE_BACKEND_ENDPOINT}}
         run: |
           cd app
           npm install -g pnpm
@@ -68,4 +68,4 @@ jobs:
 
       - name: Copy build artifacts to the server
         run: |
-          scp -r app/dist/* ${{ secrets.SERVER_USER }}@${{ secrets.FRONT_SERVER_IP }}:/var/www/html/
+          scp -r app/dist/* ${{ secrets.SERVER_USER }}@${{ secrets.FRONT_SERVER_IP }}:/usr/share/nginx/html/
