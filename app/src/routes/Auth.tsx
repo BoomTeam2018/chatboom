@@ -1,7 +1,7 @@
 import { useToast } from '@/components/ui/use-toast.ts';
 import { ToastAction } from '@/components/ui/toast.tsx';
 import { tokenField } from '@/conf/bootstrap.ts';
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import Loader from '@/components/Loader.tsx';
 import '@/assets/pages/auth.less';
 import { validateToken } from '@/store/auth.ts';
@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button.tsx';
 import { formReducer, isTextInRange } from '@/utils/form.ts';
 import { doLogin, LoginForm } from '@/api/auth.ts';
 import { getErrorMessage, isEnter } from '@/utils/base.ts';
+import { PrivacyPolicy } from '@/components/PrivacyPolicy/index'
 
 function DeepAuth() {
     const { toast } = useToast();
@@ -95,6 +96,7 @@ function DeepAuth() {
 
 function Login() {
     const { t } = useTranslation();
+    const [hasAgreed, setHasAgreed] =useState(false);
     const { toast } = useToast();
     const globalDispatch = useDispatch();
     const [form, dispatch] = useReducer(formReducer<LoginForm>(), {
@@ -103,6 +105,9 @@ function Login() {
     });
 
     const onSubmit = async () => {
+        if(!hasAgreed){
+            return 
+        }
         if (
             !isTextInRange(form.username, 1, 255) ||
             !isTextInRange(form.password, 6, 36)
@@ -212,6 +217,7 @@ function Login() {
                         >
                             {t('login')}
                         </Button>
+                        <PrivacyPolicy setHasAgreed={setHasAgreed} />
                     </div>
                 </CardContent>
             </Card>

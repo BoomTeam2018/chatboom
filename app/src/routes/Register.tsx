@@ -18,18 +18,30 @@ import { validateToken } from '@/store/auth.ts';
 import { useDispatch, useSelector } from 'react-redux';
 import { appLogo, appName } from '@/conf/env.ts';
 import { infoMailSelector } from '@/store/info.ts';
+import { PrivacyPolicy } from '@/components/PrivacyPolicy/index';
 
 type CompProps = {
     form: RegisterForm;
     dispatch: React.Dispatch<any>;
     next: boolean;
     setNext: (next: boolean) => void;
+    setHasAgreed: (next: boolean) => void;
+    hasAgreed: boolean;
 };
 
-function Preflight({ form, dispatch, setNext }: CompProps) {
+function Preflight({
+    form,
+    dispatch,
+    setNext,
+    setHasAgreed,
+    hasAgreed
+}: CompProps) {
     const { t } = useTranslation();
 
     const onSubmit = () => {
+        if (!hasAgreed) {
+            return;
+        }
         if (
             !isTextInRange(form.username, 2, 24) ||
             !isTextInRange(form.password, 6, 36) ||
@@ -109,6 +121,7 @@ function Preflight({ form, dispatch, setNext }: CompProps) {
             <Button className={`mt-2`} onClick={onSubmit}>
                 {t('auth.next-step')}
             </Button>
+            <PrivacyPolicy setHasAgreed={setHasAgreed} />
         </div>
     );
 }
@@ -124,7 +137,13 @@ function doFormat(form: RegisterForm): RegisterForm {
     };
 }
 
-function Verify({ form, dispatch, setNext }: CompProps) {
+function Verify({
+    form,
+    dispatch,
+    setNext,
+    setHasAgreed,
+    hasAgreed
+}: CompProps) {
     const { t } = useTranslation();
     const { toast } = useToast();
     const globalDispatch = useDispatch();
@@ -133,7 +152,9 @@ function Verify({ form, dispatch, setNext }: CompProps) {
 
     const onSubmit = async () => {
         const data = doFormat(form);
-
+        if (!hasAgreed) {
+            return;
+        }
         if (!isEmailValid(data.email)) return;
         if (mail && data.code.trim().length === 0) return;
 
@@ -205,6 +226,7 @@ function Verify({ form, dispatch, setNext }: CompProps) {
             <Button className={`mt-2`} loading={true} onClick={onSubmit}>
                 {t('register')}
             </Button>
+            <PrivacyPolicy setHasAgreed={setHasAgreed} />
 
             <div className={`mt-1 translate-y-1 text-center text-sm`}>
                 {t('auth.incorrect-info')}
@@ -222,6 +244,7 @@ function Verify({ form, dispatch, setNext }: CompProps) {
 function Register() {
     const { t } = useTranslation();
     const [next, setNext] = useState(false);
+    const [hasAgreed, setHasAgreed] = useState(false);
     const [form, dispatch] = useReducer(formReducer<RegisterForm>(), {
         username: '',
         password: '',
@@ -244,6 +267,8 @@ function Register() {
                             dispatch={dispatch}
                             next={next}
                             setNext={setNext}
+                            setHasAgreed={setHasAgreed}
+                            hasAgreed={hasAgreed}
                         />
                     ) : (
                         <Verify
@@ -251,6 +276,8 @@ function Register() {
                             dispatch={dispatch}
                             next={next}
                             setNext={setNext}
+                            setHasAgreed={setHasAgreed}
+                            hasAgreed={hasAgreed}
                         />
                     )}
                 </CardContent>

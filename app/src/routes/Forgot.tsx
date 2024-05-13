@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useToast } from '@/components/ui/use-toast.ts';
-import { useReducer } from 'react';
+import { useReducer, useState } from 'react';
 import { formReducer, isEmailValid, isTextInRange } from '@/utils/form.ts';
 import { doReset, ResetForm, sendCode } from '@/api/auth.ts';
 import router from '@/router.tsx';
@@ -19,11 +19,13 @@ import { appLogo } from '@/conf/env.ts';
 import { useSelector } from 'react-redux';
 import { infoMailSelector } from '@/store/info.ts';
 import { AlertCircle } from 'lucide-react';
+import { PrivacyPolicy } from '@/components/PrivacyPolicy/index'
 
 function Forgot() {
     const { t } = useTranslation();
     const { toast } = useToast();
     const enabled = useSelector(infoMailSelector);
+    const [hasAgreed, setHasAgreed] =useState(false);
 
     const [form, dispatch] = useReducer(formReducer<ResetForm>(), {
         email: '',
@@ -35,6 +37,9 @@ function Forgot() {
     const onVerify = async () => await sendCode(t, toast, form.email);
 
     const onSubmit = async () => {
+        if(!hasAgreed){
+            return 
+        }
         if (
             !isEmailValid(form.email) ||
             !form.code.length ||
@@ -173,6 +178,8 @@ function Forgot() {
                         >
                             {t('reset')}
                         </Button>
+                        <PrivacyPolicy setHasAgreed={setHasAgreed} />
+
                     </div>
                 </CardContent>
             </Card>
