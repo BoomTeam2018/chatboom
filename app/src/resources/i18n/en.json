@@ -1,5 +1,9 @@
 {
     "new-chat-placeholder": "create new conversation",
+    "please-agree-policy":"please agree to the user agreement and privacy policy",
+    "hasAgreed":"I have read and agree to the policy",
+    "privacy-policy":"Privacy Policy",
+    "user-agreement":"User Agreement",
     "new-music-placeholder": "create new music",
     "end": ".",
     "add": "Add",
@@ -769,6 +773,7 @@
         "register-success": "Account created !",
         "register-success-prompt": "You have successfully registered, welcome!",
         "disabled-mail": "The mailbox of the current site has been disabled, please contact the administrator to enable the mailing function.",
+        "agree-policy":"By logging in, you agree to the User Agreement and Privacy Policy",
         "code-disabled-placeholder": "No email verification required"
     },
     "reset": "Reset",

@@ -1,5 +1,9 @@
 {
     "new-chat-placeholder": "新しい会話を作成する",
+    "please-agree-policy":"サインアップする前に、以下の利用規約に同意してください",
+    "hasAgreed":"同意しました",
+    "privacy-policy":"プライバシーポリシー",
+    "user-agreement":"ユーザー契約",
     "new-music-placeholder": "新しい音楽を作成する",
     "end": "",
     "add": "登録",
@@ -769,6 +773,7 @@
         "register-success": "登録に成功しました",
         "register-success-prompt": "登録が完了しました。ようこそ！",
         "disabled-mail": "現在のサイトのメールボックスは無効になっています。管理者に連絡して郵送機能を有効にしてください。",
+        "agree-policy":"ログインすると、ユーザー利用規約およびプライバシーポリシーに同意したものと見なされます",
         "code-disabled-placeholder": "メールアドレスの認証は必要ありません"
     },
     "reset": "リセット",
