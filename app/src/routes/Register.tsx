@@ -182,7 +182,11 @@ function Verify({
     };
 
     const onVerify = async () => await sendCode(t, toast, form.email, true);
-
+    const handleSetHasAgreed = (next: boolean) => {
+        if (setHasAgreed) {
+            setHasAgreed(next);
+        }
+    };
     return (
         <div className={`auth-wrapper`}>
             <Label>
@@ -231,7 +235,7 @@ function Verify({
             <Button className={`mt-2`} loading={true} onClick={onSubmit}>
                 {t('register')}
             </Button>
-            <PrivacyPolicy setHasAgreed={setHasAgreed} />
+            <PrivacyPolicy setHasAgreed={handleSetHasAgreed} />
 
             <div className={`mt-1 translate-y-1 text-center text-sm`}>
                 {t('auth.incorrect-info')}
