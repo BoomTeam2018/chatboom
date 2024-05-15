@@ -26,6 +26,7 @@ import { cn } from '@/components/ui/lib/utils.ts';
 import { goAuth } from '@/utils/app.ts';
 import { getModelFromId } from '@/conf/model.ts';
 import NavBar from '@/components/app/NavBar.tsx';
+import MainFooter from '@/components/home/MainFooter.tsx';
 
 function fileReducer(state: FileArray, action: Record<string, any>): FileArray {
     switch (action.type) {
@@ -190,6 +191,7 @@ function ChatWrapper() {
                     </div>
                     <div className={`input-options`}></div>
                 </div>
+                <MainFooter />
             </div>
         </div>
     );
