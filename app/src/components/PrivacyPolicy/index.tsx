@@ -1,9 +1,12 @@
 import './index.less';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     setHasAgreed: (a: boolean) => void;
 }
 export const PrivacyPolicy = ({ setHasAgreed }: Props) => {
+    const { t } = useTranslation();
+
     return (
         <div className="fm-agreement">
             <input
@@ -17,19 +20,19 @@ export const PrivacyPolicy = ({ setHasAgreed }: Props) => {
             <label className="fm-agreement-text">
                 <div>
                     <p>
-                        已阅读并同意以下协议
+                        {t("hasAgreed")}
                         <a
-                            href="http://43.139.166.43/privacy.pdf"
+                            href="https://biunova.com/privacy.pdf"
                             target="_blank"
                         >
-                            隐私权政策
+                            {t("privacy-policy")}
                         </a>
                         、
                         <a
-                            href="http://43.139.166.43/protocal.pdf"
+                            href="https://biunova.com/protocal.pdf"
                             target="_blank"
                         >
-                            用户服务协议
+                            {t("user-agreement")}
                         </a>
                     </p>
                 </div>

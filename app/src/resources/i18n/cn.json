@@ -1,5 +1,9 @@
 {
     "new-chat-placeholder": "创建新对话",
+    "please-agree-policy":"请确认用户服务协议",
+    "hasAgreed":"已阅读并同意以下协议",
+    "privacy-policy":"隐私权政策",
+    "user-agreement":"用户服务协议",
     "new-music-placeholder": "创建新音乐",
     "end": "",
     "add": "添加",
@@ -91,7 +95,8 @@
         "send-code-failed-prompt": "验证码发送失败，原因：{{reason}}",
         "register-success": "注册成功",
         "register-success-prompt": "您已成功注册，欢迎你的到来！",
-        "disabled-mail": "当前站点的邮箱已被禁用，请联系管理员开启发件功能。"
+        "disabled-mail": "当前站点的邮箱已被禁用，请联系管理员开启发件功能。",
+        "agree-policy":"登录即视为同意用户服务协议与隐私政策"
     },
     "tag": {
         "free": "免费",

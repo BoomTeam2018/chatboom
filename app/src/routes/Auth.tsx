@@ -20,7 +20,6 @@ import { Button } from '@/components/ui/button.tsx';
 import { formReducer, isTextInRange } from '@/utils/form.ts';
 import { doLogin, LoginForm } from '@/api/auth.ts';
 import { getErrorMessage, isEnter } from '@/utils/base.ts';
-// import { PrivacyPolicy } from '@/components/PrivacyPolicy/index'
 
 function DeepAuth() {
     const { toast } = useToast();
@@ -96,7 +95,6 @@ function DeepAuth() {
 
 function Login() {
     const { t } = useTranslation();
-    // const [hasAgreed, setHasAgreed] =useState(false);
     const { toast } = useToast();
     const globalDispatch = useDispatch();
     const [form, dispatch] = useReducer(formReducer<LoginForm>(), {
@@ -217,7 +215,7 @@ function Login() {
                         >
                             {t('login')}
                         </Button>
-                        {/* <PrivacyPolicy setHasAgreed={setHasAgreed} /> */}
+                        <p className='agree-policy'>{t('auth.agree-policy')}</p>
                     </div>
                 </CardContent>
             </Card>

@@ -19,37 +19,28 @@ import { useDispatch, useSelector } from 'react-redux';
 import { appLogo, appName } from '@/conf/env.ts';
 import { infoMailSelector } from '@/store/info.ts';
 import { PrivacyPolicy } from '@/components/PrivacyPolicy/index';
+import Toast from '@/components/Toast';
 
 type CompProps = {
     form: RegisterForm;
     dispatch: React.Dispatch<any>;
     next: boolean;
     setNext: (next: boolean) => void;
-    setHasAgreed: (next: boolean) => void;
-    hasAgreed: boolean;
-    isVisible: boolean;
-    setIsVisible: (next: boolean) => void;
+    setHasAgreed?: (next: boolean) => void;
+    hasAgreed?: boolean;
+    isVisible?: boolean;
+    setIsVisible?: (next: boolean) => void;
 };
 
 function Preflight({
     form,
     dispatch,
     setNext,
-    setHasAgreed,
-    hasAgreed,
     isVisible,
-    setIsVisible
 }: CompProps) {
     const { t } = useTranslation();
 
     const onSubmit = () => {
-        if (!hasAgreed) {
-            setIsVisible(true);
-            setTimeout(() => {
-                setIsVisible(false);
-            }, 1000);
-            return;
-        }
         if (
             !isTextInRange(form.username, 2, 24) ||
             !isTextInRange(form.password, 6, 36) ||
@@ -129,7 +120,7 @@ function Preflight({
             <Button className={`mt-2`} onClick={onSubmit}>
                 {t('auth.next-step')}
             </Button>
-            <PrivacyPolicy setHasAgreed={setHasAgreed} />
+            {/* <PrivacyPolicy setHasAgreed={setHasAgreed} /> */}
         </div>
     );
 }
@@ -162,16 +153,16 @@ function Verify({
 
     const onSubmit = async () => {
         const data = doFormat(form);
+
+        if (!isEmailValid(data.email)) return;
+        if (mail && data.code.trim().length === 0) return;
         if (!hasAgreed) {
-            setIsVisible(true);
+            setIsVisible?.(true);
             setTimeout(() => {
-                setIsVisible(false);
+                setIsVisible?.(false);
             }, 1000);
             return;
         }
-        if (!isEmailValid(data.email)) return;
-        if (mail && data.code.trim().length === 0) return;
-
         const resp = await doRegister(data);
         if (!resp.status) {
             toast({
@@ -274,6 +265,7 @@ function Register() {
             <div className={`title`}>
                 {t('register')} {appName}
             </div>
+            {isVisible && <Toast />}
             <Card className={`auth-card`}>
                 <CardContent className={`pb-0`}>
                     {!next ? (
