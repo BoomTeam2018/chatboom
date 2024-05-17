@@ -1,10 +1,10 @@
 import './index.less';
 import { useTranslation } from 'react-i18next';
 
-interface Props {
+interface PrivacyPolicyProps {
     setHasAgreed: (a: boolean) => void;
 }
-export const PrivacyPolicy = ({ setHasAgreed }: Props) => {
+export const PrivacyPolicy = ({ setHasAgreed }: PrivacyPolicyProps) => {
     const { t } = useTranslation();
 
     return (
