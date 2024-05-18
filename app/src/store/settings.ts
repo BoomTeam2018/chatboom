@@ -13,7 +13,7 @@ export const initialSettings = {
     align: false,
     history: 8,
     sender: true,
-    max_tokens: 8192,
+    max_tokens: 4096,
     temperature: 0.6,
     top_p: 1,
     top_k: 5,
@@ -30,7 +30,7 @@ export const settingsSlice = createSlice({
         align: getBooleanMemory('align', false), // chat textarea align center
         history: getNumberMemory('history_context', 8), // max history context length
         sender: getBooleanMemory('sender', true), // sender (false: Ctrl + Enter, true: Enter)
-        max_tokens: getNumberMemory('max_tokens', 8192), // max tokens
+        max_tokens: getNumberMemory('max_tokens', 4096), // max tokens
         temperature: getNumberMemory('temperature', 0.6), // temperature
         top_p: getNumberMemory('top_p', 1), // top_p
         top_k: getNumberMemory('top_k', 5), // top_k
