@@ -83,7 +83,7 @@ export async function buyQuota(quota: number): Promise<QuotaResponse> {
 
 export async function orderToPay(paymentRequest: PayRequest): Promise<PayResponse> {
     try {
-        const resp = await axios.post(`/v1/pay/orderToPay`, paymentRequest);
+        const resp = await axios.post(`/pay/orderToPay`, paymentRequest);
         return resp.data as PayResponse;
     } catch (e) {
         console.debug(e);

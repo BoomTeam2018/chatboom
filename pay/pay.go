@@ -95,7 +95,7 @@ func OrderToPay(c *gin.Context) {
 		return
 	}
 	// 发起POST请求
-	resp, err := http.Post("http://localhost:8094/api/v1/pay/order", "application/json", bytes.NewBuffer(body))
+	resp, err := http.Post("http://localhost:8094/api/pay/order", "application/json", bytes.NewBuffer(body))
 	if err != nil {
 		returnErrorResponse(c, http.StatusInternalServerError, "Error calling API", err)
 		return
@@ -115,7 +115,7 @@ func OrderToPay(c *gin.Context) {
 	// 创建并保存新订单
 	db := utils.GetDBFromContext(c)
 	patOrder := PayOrder{
-		UserId:      user.ID,
+		UserId:      2,
 		ChannelType: req.ChannelType,
 		TotalAmount: req.TotalAmount,
 		BizOrderNum: req.BizOrderNum,

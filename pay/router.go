@@ -5,8 +5,8 @@ import (
 )
 
 func Register(app *gin.RouterGroup) {
-	app.POST("/v1/pay/orderToPay", OrderToPay)
-	app.POST("/v1/pay/modifyPayStatus", ModifyPayStatus)
-	app.POST("/v1/pay/order", Order)
-	app.POST("/v1/pay/payStatus", PayStatus)
+	app.POST("/pay/orderToPay", OrderToPay)
+	app.POST("/pay/modifyPayStatus", ModifyPayStatus)
+	app.POST("/pay/order", Order)
+	app.POST("/pay/payStatus", PayStatus)
 }
