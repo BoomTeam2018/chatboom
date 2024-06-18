@@ -1,6 +1,8 @@
 package channel
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 func Register(app *gin.RouterGroup) {
 	app.GET("/info", GetInfo)

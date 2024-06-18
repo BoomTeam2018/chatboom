@@ -302,3 +302,23 @@ func CreateBroadcastTable(db *sql.DB) {
 		fmt.Println(err)
 	}
 }
+
+func CreateOrderTable(db *sql.DB) {
+	_, err := globals.ExecDb(db, `
+		CREATE TABLE IF NOT EXISTS pay_order (
+		  user_id INT,
+		  biz_order_num VARCHAR(255),
+		  total_amount FLOAT,
+		  channel_type int,
+		  orderNum VARCHAR(255),
+          outOrderNum VARCHAR(255),
+		  subject VARCHAR(255),
+		  pay_status int,
+		  pay_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+		  FOREIGN KEY (uid) REFERENCES auth(id)
+		);
+	`)
+	if err != nil {
+		fmt.Println(err)
+	}
+}

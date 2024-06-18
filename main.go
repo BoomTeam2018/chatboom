@@ -11,6 +11,7 @@ import (
 	"chat/manager"
 	"chat/manager/conversation"
 	"chat/middleware"
+	"chat/pay"
 	"chat/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -49,6 +50,7 @@ func registerApiRouter(engine *gin.Engine) {
 		manager.Register(app)
 		addition.Register(app)
 		conversation.Register(app)
+		pay.Register(app)
 	}
 }
 

@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
     closeDialog,
     dialogSelector,
@@ -9,8 +9,8 @@ import {
     dialogSelector as subDialogSelector,
     openDialog as openSubDialog
 } from '@/store/subscription.ts';
-import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import {useTranslation} from 'react-i18next';
+import {useState} from 'react';
 import {
     Dialog,
     DialogContent,
@@ -19,10 +19,10 @@ import {
     DialogTitle
 } from '@/components/ui/dialog.tsx';
 import '@/assets/pages/quota.less';
-import { Cloud, ExternalLink, Plus } from 'lucide-react';
-import { Input } from '@/components/ui/input.tsx';
-import { testNumberInputEvent } from '@/utils/dom.ts';
-import { Button } from '@/components/ui/button.tsx';
+import {Cloud, ExternalLink, Plus} from 'lucide-react';
+import {Input} from '@/components/ui/input.tsx';
+import {testNumberInputEvent} from '@/utils/dom.ts';
+import {Button} from '@/components/ui/button.tsx';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -33,17 +33,17 @@ import {
     AlertDialogHeader,
     AlertDialogTrigger
 } from '@/components/ui/alert-dialog.tsx';
-import { AlertDialogTitle } from '@radix-ui/react-alert-dialog';
-import { buyQuota } from '@/api/addition.ts';
-import { useToast } from '@/components/ui/use-toast.ts';
-import { useEffectAsync } from '@/utils/hook.ts';
-import { selectAuthenticated, selectUsername } from '@/store/auth.ts';
-import { ToastAction } from '@/components/ui/toast.tsx';
-import { buyLink, deeptrainEndpoint, useDeeptrain } from '@/conf/env.ts';
-import { useRedeem } from '@/api/redeem.ts';
-import { cn } from '@/components/ui/lib/utils.ts';
-import { subscriptionDataSelector } from '@/store/globals.ts';
-import { openWindow } from '@/utils/device.ts';
+import {AlertDialogTitle} from '@radix-ui/react-alert-dialog';
+import {orderToPay, payStatus} from '@/api/addition.ts';
+import {useToast} from '@/components/ui/use-toast.ts';
+import {useEffectAsync} from '@/utils/hook.ts';
+import {selectAuthenticated, selectUsername} from '@/store/auth.ts';
+import {ToastAction} from '@/components/ui/toast.tsx';
+import {buyLink, deeptrainEndpoint, useDeeptrain} from '@/conf/env.ts';
+import {useRedeem} from '@/api/redeem.ts';
+import {cn} from '@/components/ui/lib/utils.ts';
+import {subscriptionDataSelector} from '@/store/globals.ts';
+import {openWindow} from '@/utils/device.ts';
 
 type AmountComponentProps = {
     amount: number;
@@ -52,22 +52,33 @@ type AmountComponentProps = {
     onClick?: () => void;
 };
 
+function generateUniqueId(): string {
+    // 获取当前时间的毫秒数
+    const timestamp = Date.now().toString(36);
+    // 生成一个随机数
+    const random = Math.random().toString(36).substring(2, 8);
+    // 可以添加其他唯一标识符，如用户ID，这里省略以保持简单
+    // 拼接并返回
+    return `${timestamp}-${random}`;
+}
+
 function AmountComponent({
-    amount,
-    active,
-    other,
-    onClick
-}: AmountComponentProps) {
-    const { t } = useTranslation();
+                             amount,
+                             active,
+                             other,
+                             onClick
+                         }: AmountComponentProps) {
+    const {t} = useTranslation();
 
     return (
         <div className={cn('amount', active && 'active')} onClick={onClick}>
             {!other ? (
                 <>
                     <div className={`amount-title`}>
-                        <Cloud className={`h-4 w-4`} />
+                        <Cloud className={`h-4 w-4`}/>
                         {amount.toFixed(0)}
                     </div>
+                    npm install uuid
                     <div className={`amount-desc`}>{amount.toFixed(2)}</div>
                 </>
             ) : (
@@ -77,15 +88,16 @@ function AmountComponent({
     );
 }
 
+
 function QuotaDialog() {
-    const { t } = useTranslation();
-    const { toast } = useToast();
+    const {t} = useTranslation();
+    const {toast} = useToast();
     const [current, setCurrent] = useState(1);
     const [amount, setAmount] = useState(10);
     const open = useSelector(dialogSelector);
     const auth = useSelector(selectAuthenticated);
     const username = useSelector(selectUsername);
-
+    let bizNUm: string | undefined = "";
     const sub = useSelector(subDialogSelector);
     const subscriptionData = useSelector(subscriptionDataSelector);
 
@@ -194,13 +206,13 @@ function QuotaDialog() {
                                                                     case 'ArrowUp':
                                                                         setAmount(
                                                                             amount +
-                                                                                1
+                                                                            1
                                                                         );
                                                                         break;
                                                                     case 'ArrowDown':
                                                                         setAmount(
                                                                             amount -
-                                                                                1
+                                                                            1
                                                                         );
                                                                         break;
                                                                 }
@@ -252,7 +264,7 @@ function QuotaDialog() {
                                                     <Plus
                                                         className={`h-4 w-4 mr-2`}
                                                     />
-                                                    {t('buy.buy', { amount })}
+                                                    {t('buy.buy', {amount})}
                                                 </Button>
                                             </AlertDialogTrigger>
                                             <AlertDialogContent>
@@ -285,16 +297,27 @@ function QuotaDialog() {
                                                                             )
                                                                         }
                                                                     );
-
-                                                                openWindow(
-                                                                    `${buyLink}?quota=${amount}&username=${username}`,
-                                                                    '_blank'
-                                                                );
+                                                                const res =
+                                                                    await orderToPay(
+                                                                        {
+                                                                            requestId: generateUniqueId(), // 请求ID
+                                                                            channelType: 1,  // 支付渠道类型
+                                                                            totalAmount: amount,// 总金额
+                                                                            subject: "扫码支付" // 备注
+                                                                        }
+                                                                    );
+                                                                if (res.success) {
+                                                                    bizNUm = res.data?.bizOrderNum
+                                                                    openWindow(
+                                                                        `${buyLink}?quota=${amount}&username=${username}`,
+                                                                        '_blank'
+                                                                    );
+                                                                }
                                                                 return;
                                                             }
                                                             const res =
-                                                                await buyQuota(
-                                                                    amount
+                                                                await payStatus(
+                                                                    bizNUm
                                                                 );
                                                             if (res.status) {
                                                                 toast({
@@ -341,14 +364,14 @@ function QuotaDialog() {
                                                                     ) : undefined
                                                                 });
                                                                 useDeeptrain &&
-                                                                    setTimeout(
-                                                                        () => {
-                                                                            openWindow(
-                                                                                `${deeptrainEndpoint}/home/wallet`
-                                                                            );
-                                                                        },
-                                                                        2000
-                                                                    );
+                                                                setTimeout(
+                                                                    () => {
+                                                                        openWindow(
+                                                                            `${deeptrainEndpoint}/home/wallet`
+                                                                        );
+                                                                    },
+                                                                    2000
+                                                                );
                                                             }
                                                         }}
                                                     >

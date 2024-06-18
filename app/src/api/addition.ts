@@ -1,10 +1,44 @@
 import axios from 'axios';
-import { getErrorMessage } from '@/utils/base.ts';
+import {getErrorMessage} from '@/utils/base.ts';
 
 type QuotaResponse = {
     status: boolean;
     error: string;
 };
+
+type PayStatusResponse = {
+    status: boolean;
+    error: string;
+};
+
+export type PayRequest = {
+    requestId: string; // 请求ID
+    channelType: number;  // 支付渠道类型
+    totalAmount: number;// 总金额
+    subject: string; // 备注
+};
+
+type PayResponse = {
+    requestId: string,
+    success: boolean,
+    code: number,
+    msg: string,
+    thirdPartCode: string,
+    thirdPartMsg: string,
+    data?: OrderRespone
+};
+
+type OrderRespone = {
+    bizOrderNum: string,    // 业务订单号
+    orderNum: string,
+    outOrderNum: string,
+    jumpUrl: string,
+    extraData: ExtraData
+};
+
+type ExtraData = {
+    qrCode: string,// 二维码, 用工具将其转换为二维码,让用户用支付宝扫码即可
+}
 
 type PackageResponse = {
     status: boolean;
@@ -39,11 +73,39 @@ type ResetApiKeyResponse = {
 
 export async function buyQuota(quota: number): Promise<QuotaResponse> {
     try {
-        const resp = await axios.post(`/buy`, { quota });
+        const resp = await axios.post(`/buy`, {quota});
         return resp.data as QuotaResponse;
     } catch (e) {
         console.debug(e);
-        return { status: false, error: 'network error' };
+        return {status: false, error: 'network error'};
+    }
+}
+
+export async function orderToPay(paymentRequest: PayRequest): Promise<PayResponse> {
+    try {
+        const resp = await axios.post(`/v1/pay/orderToPay`, paymentRequest);
+        return resp.data as PayResponse;
+    } catch (e) {
+        console.debug(e);
+        return {
+            data: undefined,
+            code: 0,
+            requestId: "",
+            thirdPartCode: "",
+            thirdPartMsg: "",
+            success: false,
+            msg: 'network error'
+        };
+    }
+}
+
+export async function payStatus(bizNum: string | undefined): Promise<PayStatusResponse> {
+    try {
+        const resp = await axios.post(`/payStatus`, {bizNum});
+        return resp.data as PayStatusResponse;
+    } catch (e) {
+        console.debug(e);
+        return {status: false, error: 'network error'};
     }
 }
 
@@ -51,7 +113,7 @@ export async function getPackage(): Promise<PackageResponse> {
     try {
         const resp = await axios.get(`/package`);
         if (resp.data.status === false) {
-            return { status: false, cert: false, teenager: false };
+            return {status: false, cert: false, teenager: false};
         }
         return {
             status: resp.data.status,
@@ -60,7 +122,7 @@ export async function getPackage(): Promise<PackageResponse> {
         };
     } catch (e) {
         console.debug(e);
-        return { status: false, cert: false, teenager: false };
+        return {status: false, cert: false, teenager: false};
     }
 }
 
@@ -94,11 +156,11 @@ export async function buySubscription(
     level: number
 ): Promise<BuySubscriptionResponse> {
     try {
-        const resp = await axios.post(`/subscribe`, { level, month });
+        const resp = await axios.post(`/subscribe`, {level, month});
         return resp.data as BuySubscriptionResponse;
     } catch (e) {
         console.debug(e);
-        return { status: false, error: 'network error' };
+        return {status: false, error: 'network error'};
     }
 }
 
@@ -106,7 +168,7 @@ export async function getKey(): Promise<ApiKeyResponse> {
     try {
         const resp = await axios.get(`/apikey`);
         if (resp.data.status === false) {
-            return { status: false, key: '' };
+            return {status: false, key: ''};
         }
         return {
             status: resp.data.status,
@@ -114,7 +176,7 @@ export async function getKey(): Promise<ApiKeyResponse> {
         };
     } catch (e) {
         console.debug(e);
-        return { status: false, key: '' };
+        return {status: false, key: ''};
     }
 }
 
@@ -124,6 +186,6 @@ export async function regenerateKey(): Promise<ResetApiKeyResponse> {
         return resp.data as ResetApiKeyResponse;
     } catch (e) {
         console.debug(e);
-        return { status: false, key: '', error: getErrorMessage(e) };
+        return {status: false, key: '', error: getErrorMessage(e)};
     }
 }

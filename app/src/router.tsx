@@ -14,6 +14,7 @@ import Forgot from '@/routes/Forgot.tsx';
 import { lazyFactor } from '@/utils/loader.tsx';
 import { useSelector } from 'react-redux';
 import { selectAdmin, selectAuthenticated, selectInit } from '@/store/auth.ts';
+import QRCodeDisplay from "@/pay/qrcodedisplay.tsx";
 
 const Generation = lazyFactor(() => import('@/routes/Generation.tsx'));
 const Sharing = lazyFactor(() => import('@/routes/Sharing.tsx'));
@@ -38,6 +39,12 @@ const router = createBrowserRouter(
             id: 'home',
             path: '/',
             Component: Home,
+            ErrorBoundary: NotFound
+        },
+        {
+            id: 'pay',
+            path: '/pay',
+            Component: QRCodeDisplay,
             ErrorBoundary: NotFound
         },
         {

@@ -1,0 +1,19 @@
+@qrCodeSize: 256px;
+
+.qr-code-container {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  .qr-code-center {
+    width: 100%;
+    text-align: center;
+
+    .qrcode-react {
+      width: @qrCodeSize;
+      height: @qrCodeSize;
+    }
+  }
+}
