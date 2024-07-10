@@ -101,7 +101,7 @@ export async function orderToPay(paymentRequest: PayRequest): Promise<PayRespons
 
 export async function payStatus(bizNum: string | undefined): Promise<PayStatusResponse> {
     try {
-        const resp = await axios.post(`/pay/payStatus?bizNum=${bizNum}`, {bizNum});
+        const resp = await axios.get(`/pay/payStatus?bizNum=${bizNum}`);
         return resp.data as PayStatusResponse;
     } catch (e) {
         console.debug(e);

@@ -209,7 +209,7 @@
         "exchange-success": "兑换成功",
         "exchange-success-prompt": "您已成功兑换 {{amount}} 点数。",
         "failed": "购买失败",
-        "failed-prompt": "购买点数失败，请确保您有足够的余额。",
+        "failed-prompt": "购买点数失败",
         "exchange-failed": "兑换失败",
         "exchange-failed-prompt": "兑换失败，原因：{{reason}}",
         "gpt4-tip": "提示：web 联网版功能可能会带来更多的输入点数消耗",

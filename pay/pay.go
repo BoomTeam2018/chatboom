@@ -183,7 +183,7 @@ func PayStatus(c *gin.Context) {
 	bizNum := queryParams.Get("bizNum")
 	payOrder, err := GetPayOrder(db, bizNum)
 	if err != nil {
-		returnErrorResponse(c, http.StatusInternalServerError, "Error getting payment status", err)
+		c.JSON(http.StatusOK, gin.H{"status": false, "error": "订单支付失败"})
 		return
 	}
 	if payOrder.PayStatus == 1 {

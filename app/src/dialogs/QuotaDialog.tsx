@@ -19,7 +19,7 @@ import {
     DialogTitle
 } from '@/components/ui/dialog.tsx';
 import '@/assets/pages/quota.less';
-import {Cloud, ExternalLink, Plus} from 'lucide-react';
+import {Cloud, Plus} from 'lucide-react';
 import {Input} from '@/components/ui/input.tsx';
 import {testNumberInputEvent} from '@/utils/dom.ts';
 import {Button} from '@/components/ui/button.tsx';
@@ -87,6 +87,46 @@ function AmountComponent({
     );
 }
 
+let pollingIntervalId: NodeJS.Timeout;
+
+// 开始轮询支付状态
+function startPaymentStatusPolling(bizNum: string | undefined, onPaymentSuccess: {
+    (successResponse: any): void;
+    (arg0: { status: boolean; error: string; }): void;
+}, onPaymentFailure: { (failureError: any): void; (arg0: unknown): void; }) {
+    // 清除任何现有的轮询
+    if (pollingIntervalId) {
+        clearInterval(pollingIntervalId);
+    }
+
+    // 定义轮询函数
+    const pollPaymentStatus = async () => {
+        try {
+            const res = await payStatus(bizNum);
+            if (res.status) {
+                // 支付成功，停止轮询
+                clearInterval(pollingIntervalId);
+                onPaymentSuccess(res);
+            } else {
+                onPaymentFailure(res.error);
+                clearInterval(pollingIntervalId);
+            }
+        } catch (error) {
+            // 处理错误，可以选择在这里停止轮询或继续尝试
+            console.error('Error checking payment status:', error);
+            onPaymentFailure(error);
+            clearInterval(pollingIntervalId);
+        }
+    };
+
+    // 设置轮询间隔为3秒
+    pollingIntervalId = setInterval(pollPaymentStatus, 3000);
+
+    // 在5分钟后停止轮询
+    setTimeout(() => {
+        clearInterval(pollingIntervalId);
+    }, 5 * 60 * 1000);
+}
 
 function QuotaDialog() {
     const {t} = useTranslation();
@@ -314,66 +354,37 @@ function QuotaDialog() {
                                                                         '_blank'
                                                                     );
                                                                 }
-                                                                return;
                                                             }
-                                                            const res =
-                                                                await payStatus(
-                                                                    bizNUm
-                                                                );
-                                                            if (res.status) {
-                                                                toast({
-                                                                    title: t(
-                                                                        'buy.success'
-                                                                    ),
-                                                                    description:
-                                                                        t(
-                                                                            'buy.success-prompt',
-                                                                            {
-                                                                                amount
-                                                                            }
-                                                                        )
-                                                                });
-                                                                dispatch(
-                                                                    closeDialog()
-                                                                );
-                                                            } else {
-                                                                toast({
-                                                                    title: t(
-                                                                        'buy.failed'
-                                                                    ),
-                                                                    description: `${t(
-                                                                        'buy.failed-prompt',
-                                                                        {
-                                                                            amount
-                                                                        }
-                                                                    )}\n${
-                                                                        res.error
-                                                                    }`,
-                                                                    action: useDeeptrain ? (
-                                                                        <ToastAction
-                                                                            altText={t(
-                                                                                'buy.go'
-                                                                            )}
-                                                                            onClick={() =>
-                                                                                (location.href = `${deeptrainEndpoint}/home/wallet`)
-                                                                            }
-                                                                        >
-                                                                            {t(
-                                                                                'buy.go'
-                                                                            )}
-                                                                        </ToastAction>
-                                                                    ) : undefined
-                                                                });
-                                                                useDeeptrain &&
-                                                                setTimeout(
-                                                                    () => {
-                                                                        openWindow(
-                                                                            `${deeptrainEndpoint}/home/wallet`
-                                                                        );
-                                                                    },
-                                                                    2000
-                                                                );
-                                                            }
+                                                            startPaymentStatusPolling(bizNUm,
+                                                                () => {
+                                                                    // 支付成功处理
+                                                                    toast({
+                                                                        title: t('buy.success'),
+                                                                        description: t('buy.success-prompt', {amount})
+                                                                    });
+                                                                    dispatch(closeDialog());
+                                                                },
+                                                                () => {
+                                                                    // 支付失败或错误处理
+                                                                    toast({
+                                                                        title: t('buy.failed'),
+                                                                        description: `${t('buy.failed-prompt', {amount})}`,
+                                                                        action: useDeeptrain ? (
+                                                                            <ToastAction
+                                                                                altText={t('buy.go')}
+                                                                                onClick={() => location.href = `${deeptrainEndpoint}/home/wallet`}
+                                                                            >
+                                                                                {t('buy.go')}
+                                                                            </ToastAction>
+                                                                        ) : undefined
+                                                                    });
+                                                                    if (useDeeptrain) {
+                                                                        setTimeout(() => {
+                                                                            openWindow(`${deeptrainEndpoint}/home/wallet`);
+                                                                        }, 2000);
+                                                                    }
+                                                                }
+                                                            );
                                                         }}
                                                     >
                                                         {t('buy.dialog-buy')}
@@ -444,20 +455,20 @@ function QuotaDialog() {
                                     )}
                                 </div>
                             </div>
-                            <div
-                                className={`tip flex-row items-center justify-center mt-4 mb-4`}
-                            >
-                                {buyLink && buyLink.length > 0 && (
-                                    <Button asChild>
-                                        <a href={buyLink} target={`_blank`}>
-                                            <ExternalLink
-                                                className={`h-4 w-4 mr-2`}
-                                            />
-                                            {t('buy.buy-link')}
-                                        </a>
-                                    </Button>
-                                )}
-                            </div>
+                            {/*<div*/}
+                            {/*    className={`tip flex-row items-center justify-center mt-4 mb-4`}*/}
+                            {/*>*/}
+                            {/*    {buyLink && buyLink.length > 0 && (*/}
+                            {/*        <Button asChild>*/}
+                            {/*            <a href={buyLink} target={`_blank`}>*/}
+                            {/*                <ExternalLink*/}
+                            {/*                    className={`h-4 w-4 mr-2`}*/}
+                            {/*                />*/}
+                            {/*                {t('buy.buy-link')}*/}
+                            {/*            </a>*/}
+                            {/*        </Button>*/}
+                            {/*    )}*/}
+                            {/*</div>*/}
                         </div>
                     </DialogDescription>
                 </DialogHeader>
