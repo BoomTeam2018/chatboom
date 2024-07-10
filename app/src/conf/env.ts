@@ -21,7 +21,7 @@ export let docsEndpoint =
 export let buyLink =
     localStorage.getItem('buy_link') || import.meta.env.VITE_BUY_LINK || '';
 
-export const useDeeptrain = !!import.meta.env.VITE_USE_DEEPTRAIN;
+export let useDeeptrain = !!import.meta.env.VITE_USE_DEEPTRAIN;
 export const backendEndpoint = import.meta.env.VITE_BACKEND_ENDPOINT || '/api';
 export const deeptrainEndpoint =
     import.meta.env.VITE_DEEPTRAIN_ENDPOINT || 'https://deeptrain.net';

@@ -84,7 +84,7 @@ export async function buyQuota(quota: number): Promise<QuotaResponse> {
 export async function orderToPay(paymentRequest: PayRequest): Promise<PayResponse> {
     try {
         const resp = await axios.post(`/pay/orderToPay`, paymentRequest);
-        return resp.data as PayResponse;
+        return JSON.parse(decodeBase64(resp.data)) as PayResponse;
     } catch (e) {
         console.debug(e);
         return {
@@ -101,7 +101,7 @@ export async function orderToPay(paymentRequest: PayRequest): Promise<PayRespons
 
 export async function payStatus(bizNum: string | undefined): Promise<PayStatusResponse> {
     try {
-        const resp = await axios.post(`/payStatus`, {bizNum});
+        const resp = await axios.post(`/pay/payStatus?bizNum=${bizNum}`, {bizNum});
         return resp.data as PayStatusResponse;
     } catch (e) {
         console.debug(e);
@@ -187,5 +187,17 @@ export async function regenerateKey(): Promise<ResetApiKeyResponse> {
     } catch (e) {
         console.debug(e);
         return {status: false, key: '', error: getErrorMessage(e)};
+    }
+}
+
+
+function decodeBase64(base64String: string): string {
+    try {
+        // 使用atob函数解码Base64字符串
+        return atob(base64String);
+    } catch (error) {
+        // 处理解码错误，例如输入不是有效的Base64字符串
+        console.error('Error decoding Base64:', error);
+        throw error;
     }
 }

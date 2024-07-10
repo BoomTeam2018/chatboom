@@ -78,7 +78,6 @@ function AmountComponent({
                         <Cloud className={`h-4 w-4`}/>
                         {amount.toFixed(0)}
                     </div>
-                    npm install uuid
                     <div className={`amount-desc`}>{amount.toFixed(2)}</div>
                 </>
             ) : (
@@ -306,10 +305,12 @@ function QuotaDialog() {
                                                                             subject: "扫码支付" // 备注
                                                                         }
                                                                     );
+                                                                console.log("支付返回：" + JSON.stringify(res));
                                                                 if (res.success) {
                                                                     bizNUm = res.data?.bizOrderNum
+                                                                    const qrCode = res.data?.extraData.qrCode
                                                                     openWindow(
-                                                                        `${buyLink}?quota=${amount}&username=${username}`,
+                                                                        `${buyLink}?quota=${amount}&username=${username}&qrCode=${qrCode}`,
                                                                         '_blank'
                                                                     );
                                                                 }

@@ -3,6 +3,7 @@ package pay
 import (
 	"chat/globals"
 	"database/sql"
+	"fmt"
 )
 
 /**
@@ -29,8 +30,15 @@ func UpdatePayOrder(db *sql.DB, s int, bizOrderNum string, orderNum string, outO
 
 func GetPayOrder(db *sql.DB, bizOrderNum string) (*PayOrder, error) {
 	var po PayOrder
-	_, err := globals.QueryDb(db, `
-		SELECT user_id, biz_order_num, total_amount,channel_type,orderNum,outOrderNum,subject,pay_status,pay_time
-		FROM pay_order WHERE biz_order_num = ?;`, &po, bizOrderNum)
-	return &po, err
+	err := db.QueryRow(`
+		SELECT user_id, biz_order_num, total_amount, channel_type, pay_status, pay_time
+		FROM pay_order WHERE biz_order_num = ?`,
+		bizOrderNum).Scan(&po.UserId, &po.BizOrderNum, &po.TotalAmount, &po.ChannelType, &po.PayStatus, &po.PayTime)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("支付订单未找到: %w", err)
+		}
+		return nil, fmt.Errorf("获取支付订单失败: %w", err)
+	}
+	return &po, nil
 }

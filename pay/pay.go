@@ -147,6 +147,8 @@ func ModifyPayStatus(c *gin.Context) {
 	db := utils.GetDBFromContext(c)
 	//更改订单状态
 	UpdatePayOrder(db, 1, req.OrderNum, req.OutOrderNum, req.BizOrderNum)
+	//更改用户额度
+
 }
 
 func Order(c *gin.Context) {
@@ -176,7 +178,9 @@ func Order(c *gin.Context) {
 
 func PayStatus(c *gin.Context) {
 	db := utils.GetDBFromContext(c)
-	var bizNum = ""
+	// 获取URL中的查询参数
+	queryParams := c.Request.URL.Query()
+	bizNum := queryParams.Get("bizNum")
 	payOrder, err := GetPayOrder(db, bizNum)
 	if err != nil {
 		returnErrorResponse(c, http.StatusInternalServerError, "Error getting payment status", err)
@@ -185,7 +189,7 @@ func PayStatus(c *gin.Context) {
 	if payOrder.PayStatus == 1 {
 		c.JSON(http.StatusOK, gin.H{"status": true})
 	} else {
-		c.JSON(http.StatusOK, gin.H{"status": false})
+		c.JSON(http.StatusOK, gin.H{"status": false, "error": "订单支付失败"})
 	}
 }
 
