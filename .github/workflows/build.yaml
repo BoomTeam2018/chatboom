@@ -68,9 +68,9 @@ jobs:
 
       - name: Copy build artifacts to a temporary location on the server
         run: |
-          scp -r app/dist/* ${{ secrets.SERVER_USER }}@${{ secrets.FRONT_SERVER_IP }}:/home/${{ secrets.SERVER_USER }}/temp_dist/
+          scp -r app/dist ${{ secrets.SERVER_USER }}@${{ secrets.FRONT_SERVER_IP }}:/home/${{ secrets.SERVER_USER }}/
 
       - name: Move files to Nginx directory with sudo
         run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.FRONT_SERVER_IP }} 'sudo mv /home/${{ secrets.SERVER_USER }}/temp_dist/* /usr/share/nginx/html/'
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.FRONT_SERVER_IP }} 'sudo mv /home/${{ secrets.SERVER_USER }}/dist/* /usr/share/nginx/html/'
 
