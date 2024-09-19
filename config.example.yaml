@@ -1,7 +1,7 @@
 mysql:
   db: loc
   host: localhost
-  password: 123456
+  password: 111111
   port: 3306
   user: root
 

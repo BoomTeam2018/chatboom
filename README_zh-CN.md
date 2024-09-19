@@ -144,11 +144,13 @@ docker部署原项目，编译安装本项目
 
 1. ⚡ Docker Compose 安装 (推荐)
 
-   > 运行成功后, 宿主机映射地址为 `http://localhost:8000`
-
-    ```shell
-    git clone --depth=1 --branch=main --single-branch https://github.com/Deeptrain-Community/chatnio.git
-    cd chatnio
+   > 运行成功后, 宿主机映射地址为 `http://localhost:8094`
+   
+如果使用docker内的数据库，则将.env.example复制一份，并重命名为.env，使用默认值。
+如果使用本机或云数据库，则修改.env中的环境变量。
+   ```shell
+    git clone --depth=1 --branch=main --single-branch https://github.com/BoomTeam2018/chatboom.git
+    cd chatboom
     docker-compose up -d # 运行服务
    # 如需使用 stable 版本, 请使用 docker-compose -f docker-compose.stable.yaml up -d 替代
    # 如需使用 watchtower 自动更新, 请使用 docker-compose -f docker-compose.watch.yaml up -d 替代
@@ -168,25 +170,25 @@ docker部署原项目，编译安装本项目
 2. ⚡ Docker 安装 (轻量运行时, 常用于外置 _MYSQL/RDS_ 服务)
    > 如需使用 stable 版本, 请使用 `programzmh/chatnio:stable` 替代 `programzmh/chatnio:latest`
     ```shell
-   docker run -d --name chatnio \
+   docker run -d --name chatboom \
       --network host \
-      -p 8000:8094 \
+      -p 8094:8094 \
       -v ~/config:/config \
       -v ~/logs:/logs \
       -v ~/storage:/storage \
       -e MYSQL_HOST=localhost \
       -e MYSQL_PORT=3306 \
-      -e MYSQL_DB=chatnio \
+      -e MYSQL_DB=biu \
       -e MYSQL_USER=root \
-      -e MYSQL_PASSWORD=chatnio123456 \
+      -e MYSQL_PASSWORD=111111 \
       -e REDIS_HOST=localhost \
       -e REDIS_PORT=6379 \
       -e SECRET=secret \
       -e SERVE_STATIC=true \
-      programzmh/chatnio:latest
+      ethst/chatboom:latest
     ```
    > - *--network host* 指使用宿主机网络, 使 Docker 容器使用宿主机的网络, 可自行修改
-   > - *-p 8000:8094* 指映射宿主机端口为 8000, 可自行修改冒号前的端口号
+   > - *-p 8094:8094* 指映射宿主机端口为 8000, 可自行修改冒号前的端口号
    > - SECRET: JWT 密钥, 自行生成随机字符串修改
    > - SERVE_STATIC: 是否启用静态文件服务 (正常情况下不需要更改此项, 详见下方常见问题解答)
    > - *-v ~/config:/config* 挂载配置文件, *-v ~/logs:/logs* 挂载日志文件的宿主机目录, *-v ~/storage:/storage*
@@ -195,29 +197,35 @@ docker部署原项目，编译安装本项目
 
    版本更新 （_开启 Watchtower 后无需手动更新, 执行后按照上述步骤重新运行即可_）：
     ```shell
-    docker stop chatnio
-    docker rm chatnio
-    docker pull programzmh/chatnio:latest
+    docker stop chatboom
+    docker rm chatboom
+    docker pull ethst/chatboom:latest
    ```
 
 3. ⚒ 编译安装 (自定义性强)
    > 部署成功后, 默认端口为 **8094**, 访问地址为 `http://localhost:8094`
    > Config 配置项 (~/config/**config.yaml**) 可以使用环境变量进行覆盖, 如 `MYSQL_HOST` 环境变量可覆盖 `mysql.host` 配置项
 
-    ```shell
-    git clone https://github.com/BoomTeam2018/chatboom.git
-    cd chatboom
+部署前端
+将.env.deeptrain复制一份，重命名为.env,并修改环境变量VITE_BACKEND_ENDPOINT的值
+```shell
+git clone https://github.com/BoomTeam2018/chatboom.git
+cd chatboom
    
-    cd app
-    npm install -g pnpm
-    pnpm install
-    pnpm build
+cd app
+npm install -g pnpm
+pnpm install
+pnpm build
+```
    
-    cd ..
-    go build -o chatboom
+部署后端
    
-    nohup ./chatboom > output.log & # using nohup to run in background
-    ```
+```shell
+cd ..
+go build -o chatboom
+
+nohup ./chatboom > output.log & # using nohup to run in background
+```
 
 ## ❓ 常见问题 Q&A
 
