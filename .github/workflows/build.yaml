@@ -72,5 +72,7 @@ jobs:
 
       - name: Move files to Nginx directory with sudo
         run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.FRONT_SERVER_IP }} 'sudo mv /home/${{ secrets.SERVER_USER }}/dist/* /usr/share/nginx/html/'
-
+          ssh -T ${{ secrets.SERVER_USER }}@${{ secrets.FRONT_SERVER_IP }} << 'EOF'
+            sudo rm -rf /usr/share/nginx/html/
+            sudo mkdir /usr/share/nginx/html/
+            sudo mv /home/${{ secrets.SERVER_USER }}/dist/* /usr/share/nginx/html/
