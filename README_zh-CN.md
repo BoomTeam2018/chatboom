@@ -139,7 +139,7 @@ _🚀 **Next Generation AI One-Stop Solution**_
 
 ## 📦 部署
 
-*部署成功后, 管理员账号为 `root`, 密码默认为 `123456`*
+*部署成功后, 管理员账号为 `root`, 密码默认为 `111111`*
 docker部署原项目，编译安装本项目
 
 1. ⚡ Docker Compose 安装 (推荐)
@@ -166,6 +166,36 @@ docker部署原项目，编译安装本项目
    > - MySQL 数据库挂载目录项目 ~/**db**
    > - Redis 数据库挂载目录项目 ~/**redis**
    > - 配置文件挂载目录项目 ~/**config**
+
+1.1 ⚡ 前后端分离部署说明
+
+如果前后端分别部署在不同的服务器上，请参考第三步编译安装进行前端部署。
+
+* HTTP 环境：如果前端域名使用的是 http 协议，部署完成后无需额外操作。只需将环境变量 VITE_BACKEND_ENDPOINT 设置为
+```
+http://backend.com:8094/api
+```
+这样前端即可正常与后端通信。示例，前端域名 http://front.com，向后端 http://backend.com:8094/api 发起请求
+
+* HTTPS 环境：如果前端域名配置了 SSL 证书（即使用 https 协议），则后端服务也要配置SSL证书，并且配置反向代理。
+这是因为在 HTTPS 环境下，浏览器无法向 HTTP 协议的后端服务器发起请求，避免跨协议访问。示例，前端域名 https://front.com，向后端 https://backend.com/api 发起请求。使用Nginx将443的流量
+导向8094端口
+
+1.2 ⚡ 后端 Nginx 配置
+
+执行以下指令，/etc/nginx/sites-available/https2http的文件内容
+即是nginx.conf的文件内容，请替换nginx.conf中的占位符。
+```
+sudo touch /etc/nginx/sites-available/https2http
+sudo vim /etc/nginx/sites-available/https2http
+
+#copy the content in nginx.conf and paste
+
+sudo ln -s /etc/nginx/sites-available/https2http /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl reload nginx
+sudo systemctl status nginx
+```
 
 2. ⚡ Docker 安装 (轻量运行时, 常用于外置 _MYSQL/RDS_ 服务)
    > 如需使用 stable 版本, 请使用 `programzmh/chatnio:stable` 替代 `programzmh/chatnio:latest`
