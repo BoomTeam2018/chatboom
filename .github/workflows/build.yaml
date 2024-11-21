@@ -66,6 +66,13 @@ jobs:
         run: |
           ssh-keyscan -H ${{ secrets.FRONT_SERVER_IP }} >> ~/.ssh/known_hosts
 
-      - name: Copy build artifacts to the server
+      - name: Copy build artifacts to a temporary location on the server
         run: |
-          scp -r app/dist/* ${{ secrets.SERVER_USER }}@${{ secrets.FRONT_SERVER_IP }}:/usr/share/nginx/html/
+          scp -r app/dist ${{ secrets.SERVER_USER }}@${{ secrets.FRONT_SERVER_IP }}:/home/${{ secrets.SERVER_USER }}/
+
+      - name: Move files to Nginx directory with sudo
+        run: |
+          ssh -T ${{ secrets.SERVER_USER }}@${{ secrets.FRONT_SERVER_IP }} << 'EOF'
+            sudo rm -rf /usr/share/nginx/html/
+            sudo mkdir /usr/share/nginx/html/
+            sudo mv /home/${{ secrets.SERVER_USER }}/dist/* /usr/share/nginx/html/
